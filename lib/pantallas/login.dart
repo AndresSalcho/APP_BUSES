@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:projecto_app1/pantallas/forgotpass.dart';
+import 'package:projecto_app1/pantallas/register.dart';
+import 'package:projecto_app1/pantallas/mainscreen.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -14,6 +17,10 @@ class LoginPage extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.cover),
+        Text("\n\n\nBUSES ABC",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.white, decoration: TextDecoration.none)),
         LoginBox(),
       ],
     );
@@ -73,7 +80,14 @@ class LoginBox extends StatelessWidget {
                 SizedBox(
                   width: 250,
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement<void, void>(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) => const MainPage(),
+                          ),
+                        );
+                      },
                       style: ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll<Color>(
                             Color.fromARGB(255, 31, 31, 31)),
@@ -96,9 +110,17 @@ class LoginBox extends StatelessWidget {
                       )),
                 ),
                 SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
                   width: 250,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ForgottenPage()));
+                    },
                     style: ButtonStyle(
                       foregroundColor:
                           MaterialStatePropertyAll<Color>(Colors.black),
@@ -112,7 +134,12 @@ class LoginBox extends StatelessWidget {
                 SizedBox(
                   width: 250,
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const RegPage()));
+                      },
                       style: ButtonStyle(
                         foregroundColor:
                             MaterialStatePropertyAll<Color>(Colors.black),
@@ -120,13 +147,15 @@ class LoginBox extends StatelessWidget {
                             MaterialStatePropertyAll<Color>(Colors.transparent),
                       ),
                       child: Padding(
-                        padding: EdgeInsets.all(0),
-                        child: Text(
-                          "Registrarme",
-                          style:
-                              TextStyle(decoration: TextDecoration.underline),
-                        ),
-                      )),
+                          padding: EdgeInsets.all(0),
+                          child: Row(
+                            children: [
+                              Text("    No tiene cuenta?  "),
+                              Text("Registrarme",
+                                  style: TextStyle(
+                                      decoration: TextDecoration.underline))
+                            ],
+                          ))),
                 ),
               ],
             ),
