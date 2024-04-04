@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ForgottenPage extends StatelessWidget {
   const ForgottenPage({super.key});
@@ -14,14 +12,19 @@ class ForgottenPage extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.cover),
-        Forgot(),
+        const Text("\n\nBUSES ABC",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.white, decoration: TextDecoration.none)),
+        Forgot(w: MediaQuery.of(context).size.width * 0.65),
       ],
     );
   }
 }
 
 class Forgot extends StatefulWidget {
-  const Forgot({super.key});
+  final double w;
+  const Forgot({super.key, required this.w});
 
   @override
   State<Forgot> createState() => _ForgotState();
@@ -29,8 +32,6 @@ class Forgot extends StatefulWidget {
 
 class _ForgotState extends State<Forgot> {
   final _formKey = GlobalKey<FormState>();
-  double h = 280;
-  double w = 370;
 
   @override
   Widget build(BuildContext context) {
@@ -38,35 +39,35 @@ class _ForgotState extends State<Forgot> {
         key: _formKey,
         child: Center(
           child: Padding(
-            padding: EdgeInsets.only(top: 200),
+            padding: const EdgeInsets.only(top: 200),
             child: Material(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
               child: Container(
-                width: w,
-                height: h,
-                decoration: BoxDecoration(
+                constraints: const BoxConstraints(maxHeight: double.infinity),
+                width: widget.w,
+                decoration: const BoxDecoration(
                     color: Color.fromARGB(255, 255, 255, 255),
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
-                      height: 30,
+                      height: MediaQuery.of(context).size.width * 0.05,
                     ),
-                    Text("Favor ingresar su numero de cédula"),
+                    const Text("Favor ingresar su numero de cédula"),
                     SizedBox(
-                      height: 20,
+                      height: MediaQuery.of(context).size.width * 0.05,
                     ),
                     SizedBox(
-                        width: 250,
+                        width: MediaQuery.of(context).size.width * 0.48,
                         child: TextFormField(
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Por favor ingrese un dato';
                               }
-                              h = 325;
                               return null;
                             },
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 icon: Icon(Icons.person),
                                 hintText: "Cédula",
                                 hintStyle: TextStyle(
@@ -75,10 +76,10 @@ class _ForgotState extends State<Forgot> {
                                     borderSide: BorderSide(
                                         color: Colors.black, width: 2.0))))),
                     SizedBox(
-                      height: 20,
+                      height: MediaQuery.of(context).size.width * 0.05,
                     ),
                     SizedBox(
-                      width: 100,
+                      width: MediaQuery.of(context).size.width * 0.48,
                       child: TextButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
@@ -86,58 +87,65 @@ class _ForgotState extends State<Forgot> {
                                   builder: (context) => const ForgottenPage());
                               Navigator.pushReplacement(context, route);
                             } else {
-                              setState(() {
-                                h = 310;
-                              });
+                              setState(() {});
                             }
                           },
                           style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll<Color>(
-                                Color.fromARGB(255, 31, 31, 31)),
+                            backgroundColor:
+                                const MaterialStatePropertyAll<Color>(
+                                    Color.fromARGB(255, 31, 31, 31)),
                             foregroundColor:
-                                MaterialStatePropertyAll<Color>(Colors.white),
+                                const MaterialStatePropertyAll<Color>(
+                                    Colors.white),
                             overlayColor:
                                 MaterialStateProperty.resolveWith<Color?>(
                               (Set<MaterialState> states) {
-                                if (states.contains(MaterialState.hovered))
+                                if (states.contains(MaterialState.hovered)) {
                                   return Colors.white.withOpacity(0.04);
+                                }
                                 if (states.contains(MaterialState.focused) ||
-                                    states.contains(MaterialState.pressed))
+                                    states.contains(MaterialState.pressed)) {
                                   return Colors.white.withOpacity(0.12);
+                                }
                                 return null;
                               },
                             ),
                           ),
-                          child: Padding(
+                          child: const Padding(
                             padding: EdgeInsets.only(top: 10, bottom: 10),
                             child: Text("Enviar"),
                           )),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: MediaQuery.of(context).size.width * 0.05,
                     ),
                     SizedBox(
-                        width: 100,
+                        width: MediaQuery.of(context).size.width * 0.48,
                         child: TextButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Icon(
-                              size: 40,
-                              Icons.arrow_back,
-                              color: Colors.black,
-                            ),
                             style: ButtonStyle(overlayColor:
                                 MaterialStateProperty.resolveWith<Color?>(
                               (Set<MaterialState> states) {
-                                if (states.contains(MaterialState.hovered))
+                                if (states.contains(MaterialState.hovered)) {
                                   return Colors.black.withOpacity(0.04);
+                                }
                                 if (states.contains(MaterialState.focused) ||
-                                    states.contains(MaterialState.pressed))
+                                    states.contains(MaterialState.pressed)) {
                                   return Colors.black.withOpacity(0.12);
+                                }
                                 return null;
                               },
-                            )))),
+                            )),
+                            child: const Icon(
+                              size: 40,
+                              Icons.arrow_back,
+                              color: Colors.black,
+                            ))),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.width * 0.05,
+                    ),
                   ],
                 ),
               ),

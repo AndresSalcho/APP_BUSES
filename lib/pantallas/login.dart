@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_print
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:projecto_app1/apiHandler.dart';
 import 'package:projecto_app1/pantallas/forgotpass.dart';
 import 'package:projecto_app1/pantallas/register.dart';
@@ -20,11 +18,13 @@ class LoginPage extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.cover),
-        Text("\n\nBUSES ABC",
+        const Text("\n\nBUSES ABC",
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Colors.white, decoration: TextDecoration.none)),
-        LoginBox(),
+        LoginBox(
+            h: MediaQuery.of(context).size.height * 0.40,
+            w: MediaQuery.of(context).size.width * 0.80),
       ],
     );
   }
@@ -32,7 +32,9 @@ class LoginPage extends StatelessWidget {
 
 // ignore: must_be_immutable
 class LoginBox extends StatefulWidget {
-  const LoginBox({super.key});
+  double h;
+  double w;
+  LoginBox({super.key, required this.h, required this.w});
 
   @override
   State<LoginBox> createState() => _LoginBoxState();
@@ -47,9 +49,6 @@ class _LoginBoxState extends State<LoginBox> {
   String pass = "";
   bool valid = true;
 
-  double h = 325;
-  double w = 370;
-
   Future<bool> getUsuario() async {
     user = await api.getUsuario(ced, pass);
     return true;
@@ -61,22 +60,23 @@ class _LoginBoxState extends State<LoginBox> {
         key: _formKey,
         child: Center(
           child: Padding(
-            padding: EdgeInsets.only(top: 200),
-            child: Material(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              child: Container(
-                width: w,
-                height: h,
-                decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+            padding: const EdgeInsets.only(top: 180),
+            child: Container(
+              constraints: const BoxConstraints(maxHeight: double.infinity),
+              width: widget.w,
+              decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              child: Material(
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
-                      height: 20,
+                      height: MediaQuery.of(context).size.width * 0.05,
                     ),
                     SizedBox(
-                        width: 250,
+                        width: MediaQuery.of(context).size.width * 0.48,
                         child: TextFormField(
                           onSaved: (String? val) {
                             ced = int.parse(val!);
@@ -90,10 +90,9 @@ class _LoginBoxState extends State<LoginBox> {
                               }
                             }
                             valid = true;
-                            h = 325;
                             return null;
                           },
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               border: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Colors.black, width: 0.6)),
@@ -106,10 +105,10 @@ class _LoginBoxState extends State<LoginBox> {
                                       color: Colors.black, width: 2.0))),
                         )),
                     SizedBox(
-                      height: 20,
+                      height: MediaQuery.of(context).size.width * 0.05,
                     ),
                     SizedBox(
-                        width: 250,
+                        width: MediaQuery.of(context).size.width * 0.48,
                         child: TextFormField(
                             onSaved: (String? val) {
                               pass = val!;
@@ -123,11 +122,11 @@ class _LoginBoxState extends State<LoginBox> {
                                 }
                               }
                               valid = true;
-                              h = 325;
+                              //h = 325;
                               return null;
                             },
                             obscureText: true,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 icon: Icon(Icons.lock),
                                 hintText: "Contraseña",
                                 hintStyle: TextStyle(
@@ -136,59 +135,71 @@ class _LoginBoxState extends State<LoginBox> {
                                     borderSide: BorderSide(
                                         color: Colors.black, width: 2.0))))),
                     SizedBox(
-                      height: 20,
+                      height: MediaQuery.of(context).size.width * 0.05,
                     ),
                     SizedBox(
-                      width: 250,
+                      width: MediaQuery.of(context).size.width * 0.50,
                       child: TextButton(
-                          onPressed: () async {
-                            valid = true;
-                            if (_formKey.currentState!.validate()) {
-                              _formKey.currentState?.save();
-                              await getUsuario();
-                              if (user != null) {
-                                Route route = MaterialPageRoute(
-                                    builder: (context) => MainPage(user: user));
-                                Navigator.pushReplacement(context, route);
-                              } else {
-                                setState(() {
-                                  valid = false;
-                                  _formKey.currentState!.validate();
+                        onPressed: () async {
+                          valid = true;
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState?.save();
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const Center(
+                                      child: CircularProgressIndicator(
+                                    color: Colors.black,
+                                  ));
                                 });
-                              }
+                            await getUsuario();
+                            if (user != null) {
+                              Route route = MaterialPageRoute(
+                                  builder: (context) => MainPage(user: user));
+                              // ignore: use_build_context_synchronously
+                              Navigator.pushAndRemoveUntil(
+                                  context, route, (route) => false);
                             } else {
                               setState(() {
-                                h = 380;
+                                valid = false;
+                                _formKey.currentState!.validate();
                               });
                             }
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll<Color>(
-                                Color.fromARGB(255, 31, 31, 31)),
-                            foregroundColor:
-                                MaterialStatePropertyAll<Color>(Colors.white),
-                            overlayColor:
-                                MaterialStateProperty.resolveWith<Color?>(
-                              (Set<MaterialState> states) {
-                                if (states.contains(MaterialState.hovered))
-                                  return Colors.white.withOpacity(0.04);
-                                if (states.contains(MaterialState.focused) ||
-                                    states.contains(MaterialState.pressed))
-                                  return Colors.white.withOpacity(0.12);
-                                return null;
-                              },
-                            ),
+                          } else {
+                            setState(() {
+                              //h = 380;
+                            });
+                          }
+                        },
+                        style: ButtonStyle(
+                          backgroundColor:
+                              const MaterialStatePropertyAll<Color>(
+                                  Color.fromARGB(255, 31, 31, 31)),
+                          foregroundColor:
+                              const MaterialStatePropertyAll<Color>(
+                                  Colors.white),
+                          overlayColor:
+                              MaterialStateProperty.resolveWith<Color?>(
+                            (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.hovered)) {
+                                return Colors.white.withOpacity(0.04);
+                              }
+                              if (states.contains(MaterialState.focused) ||
+                                  states.contains(MaterialState.pressed)) {
+                                return Colors.white.withOpacity(0.12);
+                              }
+                              return null;
+                            },
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 10, bottom: 10),
-                            child: Text("Iniciar Sesión"),
-                          )),
+                        ),
+                        child: const Text("Iniciar Sesión"),
+                      ),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: MediaQuery.of(context).size.width * 0.03,
                     ),
                     SizedBox(
-                      width: 250,
+                      width: MediaQuery.of(context).size.width * 0.50,
                       child: TextButton(
                         onPressed: () {
                           Navigator.push(
@@ -196,42 +207,43 @@ class _LoginBoxState extends State<LoginBox> {
                               MaterialPageRoute(
                                   builder: (context) => const ForgottenPage()));
                         },
-                        style: ButtonStyle(
+                        style: const ButtonStyle(
                           foregroundColor:
                               MaterialStatePropertyAll<Color>(Colors.black),
                           overlayColor: MaterialStatePropertyAll<Color>(
                               Colors.transparent),
                         ),
-                        child: Text("Olvidó la Contraseña?",
+                        child: const Text("Olvidó la Contraseña?",
                             style: TextStyle(
                                 decoration: TextDecoration.underline)),
                       ),
                     ),
                     SizedBox(
-                      width: 250,
-                      child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const RegPage()));
-                          },
-                          style: ButtonStyle(
-                            foregroundColor:
-                                MaterialStatePropertyAll<Color>(Colors.black),
-                            overlayColor: MaterialStatePropertyAll<Color>(
-                                Colors.transparent),
-                          ),
-                          child: Padding(
-                              padding: EdgeInsets.all(0),
-                              child: Row(
-                                children: [
-                                  Text("    No tiene cuenta?  "),
-                                  Text("Registrarme",
-                                      style: TextStyle(
-                                          decoration: TextDecoration.underline))
-                                ],
-                              ))),
+                        width: MediaQuery.of(context).size.width * 0.50,
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const RegPage()));
+                            },
+                            style: const ButtonStyle(
+                              foregroundColor:
+                                  MaterialStatePropertyAll<Color>(Colors.black),
+                              overlayColor: MaterialStatePropertyAll<Color>(
+                                  Colors.transparent),
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Sin cuenta?  "),
+                                Text("Registrarme",
+                                    style: TextStyle(
+                                        decoration: TextDecoration.underline))
+                              ],
+                            ))),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.width * 0.03,
                     ),
                   ],
                 ),

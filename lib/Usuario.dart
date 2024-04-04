@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: file_names, non_constant_identifier_names
 
 class Usuario {
   final int Cedula;
@@ -8,6 +8,7 @@ class Usuario {
   final String Direccion;
   final String Contrasena;
   final double Saldo;
+  final bool Discapacitado;
 
   const Usuario(
       {required this.Cedula,
@@ -16,7 +17,8 @@ class Usuario {
       required this.Telefono,
       required this.Direccion,
       required this.Contrasena,
-      required this.Saldo});
+      required this.Saldo,
+      required this.Discapacitado});
 
   int getCedula() {
     return Cedula;
@@ -42,18 +44,22 @@ class Usuario {
     return Saldo;
   }
 
+  bool getDiscapacitado() {
+    return Discapacitado;
+  }
+
   @override
   String toString() => "$Cedula, $Nombre, $Apellidos, $Telefono";
 
   factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
-        Cedula: json['cedula'],
-        Nombre: json['nombre'],
-        Apellidos: json['apellidos'],
-        Telefono: json['telefono'],
-        Direccion: json['direccion'],
-        Contrasena: json['contrasena'],
-        Saldo: json['saldo'] + 0.0,
-      );
+      Cedula: json['cedula'],
+      Nombre: json['nombre'],
+      Apellidos: json['apellidos'],
+      Telefono: json['telefono'],
+      Direccion: json['direccion'],
+      Contrasena: json['contrasena'],
+      Saldo: json['saldo'] + 0.0,
+      Discapacitado: json['discapacitado']);
 
   Map<String, dynamic> toJson() => {
         "Cedula": Cedula,
@@ -62,6 +68,7 @@ class Usuario {
         "Telefono": Telefono,
         "Direccion": Direccion,
         "Contrasena": Contrasena,
-        "Saldo": Saldo
+        "Saldo": Saldo,
+        "Discapacitado": Discapacitado
       };
 }

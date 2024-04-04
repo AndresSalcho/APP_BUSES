@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:projecto_app1/pantallas/login.dart';
 import 'package:flutter/services.dart';
+import 'dart:io';
+import 'package:window_manager/window_manager.dart';
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 void main() async {
   // Step 2
@@ -10,6 +21,21 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((value) => runApp(const App()));
+  HttpOverrides.global = MyHttpOverrides();
+
+  await windowManager.ensureInitialized();
+
+  WindowOptions windowOptions = WindowOptions(
+      size: Size(480, 1000),
+      center: true,
+      backgroundColor: Colors.transparent,
+      skipTaskbar: false,
+      windowButtonVisibility: true,
+      titleBarStyle: TitleBarStyle.normal);
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+  });
+
   runApp(const App());
 }
 

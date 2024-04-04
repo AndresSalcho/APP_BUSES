@@ -1,14 +1,13 @@
 // ignore_for_file: avoid_print, camel_case_types
 
 import 'dart:convert';
-
 import 'package:projecto_app1/Usuario.dart';
 import 'package:http/http.dart' as http;
 
 class apiHandler {
   Future<List<Usuario>> getAll() async {
     List<Usuario> datos = [];
-    var url = Uri.parse("https://localhost:7064/api/Query/getAll");
+    var url = Uri.parse("https://192.168.100.71:7064/api/Query/getAll");
 
     try {
       http.Response response = await http.get(url);
@@ -26,7 +25,7 @@ class apiHandler {
   }
 
   Future<void> addUsuario({required Usuario user}) async {
-    var url = Uri.parse("https://localhost:7064/api/Query/addUser");
+    var url = Uri.parse("https://192.168.100.71:7064/api/Query/addUser");
     Map<String, String> headers = {"Content-type": "application/json"};
 
     String jsonBody = json.encode(user.toJson());
@@ -48,7 +47,7 @@ class apiHandler {
 
   Future<Usuario?> getUsuario(int ced, String pass) async {
     var url = Uri.parse(
-        "https://localhost:7064/api/Query/getUser?cedula=$ced&contrasena=$pass");
+        "https://192.168.100.71:7064/api/Query/getUser?cedula=$ced&contrasena=$pass");
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
@@ -61,6 +60,40 @@ class apiHandler {
     } catch (e) {
       print('There was an error getting the data: $e');
       return null;
+    }
+  }
+
+  Future<int?> checkExists(int ced) async {
+    var url = Uri.parse(
+        "https://192.168.100.71:7064/api/Query/checkExists?cedula=$ced");
+    try {
+      http.Response response = await http.get(url);
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        return data;
+      } else {
+        print('Failed to query data: ${response.statusCode}.');
+        return null;
+      }
+    } catch (e) {
+      print('There was an error getting the data: $e');
+      return null;
+    }
+  }
+
+  Future<void> updateSaldo(int ced, double ammount) async {
+    var url = Uri.parse(
+        "https://192.168.100.71:7064/api/Query/updateSaldo?cedula=$ced&ammount=$ammount");
+    try {
+      http.Response response = await http.post(url);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var responseData = json.decode(response.body);
+        print('Exito: $responseData');
+      } else {
+        print('Fallo en el Query ${response.statusCode}.');
+      }
+    } catch (e) {
+      print('Hubo un error al enviar los datos: $e');
     }
   }
 }
