@@ -1,6 +1,9 @@
 // ignore_for_file: avoid_print
 import 'package:flutter/material.dart';
+import 'package:projecto_app1/Chofer.dart';
+import 'package:projecto_app1/Tiquete.dart';
 import 'package:projecto_app1/apiHandler.dart';
+import 'package:projecto_app1/pantallas/driverscreen.dart';
 import 'package:projecto_app1/pantallas/forgotpass.dart';
 import 'package:projecto_app1/pantallas/register.dart';
 import 'package:projecto_app1/pantallas/mainscreen.dart';
@@ -42,8 +45,9 @@ class LoginBox extends StatefulWidget {
 
 class _LoginBoxState extends State<LoginBox> {
   apiHandler api = apiHandler();
-  List<Usuario> data = [];
+  List<Tiquete> data = [];
   Usuario? user;
+  Chofer? driver;
   final _formKey = GlobalKey<FormState>();
   int ced = 0;
   String pass = "";
@@ -52,6 +56,15 @@ class _LoginBoxState extends State<LoginBox> {
   Future<bool> getUsuario() async {
     user = await api.getUsuario(ced, pass);
     return true;
+  }
+
+  Future<bool> getChofer() async {
+    driver = await api.getChofer(ced, pass);
+    return true;
+  }
+
+  Future<void> getHorario() async {
+    await api.compraTiquete(208560486, 9, 1, 1);
   }
 
   @override
@@ -160,10 +173,21 @@ class _LoginBoxState extends State<LoginBox> {
                               Navigator.pushAndRemoveUntil(
                                   context, route, (route) => false);
                             } else {
-                              setState(() {
-                                valid = false;
-                                _formKey.currentState!.validate();
-                              });
+                              await getChofer();
+                              if (driver != null) {
+                                Route route = MaterialPageRoute(
+                                    builder: (context) =>
+                                        DrivePage(driver: driver));
+                                // ignore: use_build_context_synchronously
+                                Navigator.pushAndRemoveUntil(
+                                    context, route, (route) => false);
+                              } else {
+                                Navigator.pop(context);
+                                setState(() {
+                                  valid = false;
+                                  _formKey.currentState!.validate();
+                                });
+                              }
                             }
                           } else {
                             setState(() {

@@ -3,6 +3,8 @@
         android:label="Buses ABC"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyD9kZPkaBTz8Ich59TEgXpzOwlNRuhd5PE"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

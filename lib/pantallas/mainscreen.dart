@@ -1,5 +1,8 @@
 // ignore_for_file: type_init_formals, avoid_print, must_be_immutable
 import 'package:flutter/material.dart';
+import 'package:projecto_app1/Asiento.dart';
+import 'package:projecto_app1/Horario.dart';
+import 'package:projecto_app1/Tiquete.dart';
 import 'package:projecto_app1/Usuario.dart';
 import 'package:projecto_app1/apiHandler.dart';
 import 'package:projecto_app1/pantallas/login.dart';
@@ -28,6 +31,7 @@ class Mainap extends StatefulWidget {
 class _MainapState extends State<Mainap> {
   int currentPageIndex = 0;
   apiHandler api = apiHandler();
+  List<Tiquete>? data;
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +66,7 @@ class _MainapState extends State<Mainap> {
         MainBAR(
           mon: widget.user!.getSaldo(),
           ced: widget.user!.getCedula(),
+          vip: widget.user!.getDiscapacitado(),
         ),
         BusBAR(
           mon: widget.user!.getSaldo(),
@@ -77,8 +82,9 @@ class _MainapState extends State<Mainap> {
 }
 
 class MainBAR extends StatefulWidget {
-  MainBAR({super.key, required this.mon, required this.ced});
+  MainBAR({super.key, required this.mon, required this.ced, required this.vip});
   double mon;
+  final bool vip;
   final int ced;
 
   @override
@@ -88,6 +94,17 @@ class MainBAR extends StatefulWidget {
 class _MainBARState extends State<MainBAR> {
   final myController = TextEditingController();
   final apiHandler api = apiHandler();
+  List<Horario>? dataH;
+  List<Asiento>? dataA;
+  int? actual = null;
+  int len = 0;
+  late Future<List<Tiquete>> _data;
+
+  @override
+  void initState() {
+    super.initState();
+    _data = api.getTiquete(widget.ced);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +123,7 @@ class _MainBARState extends State<MainBAR> {
                       style: TextStyle(color: Colors.white, fontSize: 25),
                     ),
                     SizedBox(
-                      width: 150,
+                      width: 200,
                       height: 25,
                       child: DecoratedBox(
                           decoration: BoxDecoration(
@@ -251,89 +268,342 @@ class _MainBARState extends State<MainBAR> {
                     )
                   ]),
             )),
-        body: Center(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          SizedBox(
-              height: MediaQuery.of(context).size.height * 0.40,
-              width: MediaQuery.of(context).size.width * 0.85,
-              child: Material(
-                color: const Color.fromARGB(255, 243, 237, 246),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Mis tiquetes",
-                      style: TextStyle(fontSize: 20),
+        body: FutureBuilder(
+          future: _data,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.data == null) {
+                len = 0;
+              } else {
+                len = snapshot.data!.length;
+              }
+              return Center(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.40,
+                        width: MediaQuery.of(context).size.width * 0.85,
+                        child: Expanded(
+                            child: Container(
+                          color: const Color.fromARGB(255, 243, 237, 246),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "Mis tiquetes",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.30,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.85,
+                                  child: Material(
+                                    color: const Color.fromARGB(
+                                        255, 243, 237, 246),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: ListView.separated(
+                                        padding: const EdgeInsets.all(8),
+                                        itemCount: len,
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          if (snapshot.data != null) {
+                                            return TextButton(
+                                                style: ButtonStyle(
+                                                    side:
+                                                        MaterialStatePropertyAll(
+                                                            BorderSide(
+                                                                color: Colors
+                                                                    .black)),
+                                                    shape: MaterialStatePropertyAll(
+                                                        LinearBorder(
+                                                            side: BorderSide(
+                                                                color: Colors
+                                                                    .black)))),
+                                                onPressed: () async {},
+                                                child: Text(
+                                                  "Tiquete n° " +
+                                                      snapshot
+                                                          .data![index].idPago
+                                                          .toString() +
+                                                      "\nDescripcion: " +
+                                                      snapshot.data![index]
+                                                          .descripcipon +
+                                                      "\nCosto: " +
+                                                      snapshot
+                                                          .data![index].costo
+                                                          .toString(),
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                  textAlign: TextAlign.center,
+                                                ));
+                                          } else {
+                                            return null;
+                                          }
+                                        },
+                                        separatorBuilder:
+                                            (BuildContext context, int index) =>
+                                                const Divider()),
+                                  ))
+                            ],
+                          ),
+                        ))),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
                     ),
-                  ],
-                ),
-              )),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.02,
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.08,
-            width: MediaQuery.of(context).size.width * 0.85,
-            child: TextButton(
-              style: ButtonStyle(
-                  backgroundColor: const MaterialStatePropertyAll(
-                      Color.fromARGB(255, 243, 237, 246)),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)))),
-              onPressed: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.add,
-                    color: Colors.black,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.02,
-                  ),
-                  const Text(
-                    "Comprar tiquete",
-                    style: TextStyle(fontSize: 15, color: Colors.black),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.02,
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.08,
-            width: MediaQuery.of(context).size.width * 0.85,
-            child: TextButton(
-              style: ButtonStyle(
-                  backgroundColor: const MaterialStatePropertyAll(
-                      Color.fromARGB(255, 243, 237, 246)),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)))),
-              onPressed: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.add,
-                    color: Colors.black,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.02,
-                  ),
-                  const Text(
-                    "Dummy",
-                    style: TextStyle(fontSize: 15, color: Colors.black),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ])));
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      width: MediaQuery.of(context).size.width * 0.85,
+                      child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor: const MaterialStatePropertyAll(
+                                Color.fromARGB(255, 243, 237, 246)),
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)))),
+                        onPressed: () async {
+                          dataH = await api.getHorario();
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Center(
+                                    child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Seleccione la ruta en la que desea viajar\n",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.40,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.85,
+                                        child: Material(
+                                          color: const Color.fromARGB(
+                                              255, 243, 237, 246),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          child: ListView.separated(
+                                              padding: const EdgeInsets.all(8),
+                                              itemCount: dataH!.length,
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.vertical,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                if (dataH != null) {
+                                                  return TextButton(
+                                                      style: ButtonStyle(
+                                                          side: MaterialStatePropertyAll(
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .black)),
+                                                          shape: MaterialStatePropertyAll(
+                                                              LinearBorder(
+                                                                  side: BorderSide(
+                                                                      color: Colors
+                                                                          .black)))),
+                                                      onPressed: () async {
+                                                        dataA = await api.getAsiento(
+                                                            dataH![index]
+                                                                .getIdParada(),
+                                                            dataH![index]
+                                                                .getIdHorario());
+                                                        actual = dataH![index]
+                                                            .getIdParada();
+
+                                                        Navigator.pop(context);
+                                                        showDialog(
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return Center(
+                                                                  child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                    "Seleccione el asiento a tomar\n",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            20),
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height: MediaQuery.of(context)
+                                                                              .size
+                                                                              .height *
+                                                                          0.40,
+                                                                      width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width *
+                                                                          0.85,
+                                                                      child:
+                                                                          Material(
+                                                                        color: const Color
+                                                                            .fromARGB(
+                                                                            255,
+                                                                            243,
+                                                                            237,
+                                                                            246),
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(15)),
+                                                                        child: ListView.separated(
+                                                                            padding: const EdgeInsets.all(8),
+                                                                            itemCount: dataA!.length,
+                                                                            shrinkWrap: true,
+                                                                            scrollDirection: Axis.vertical,
+                                                                            itemBuilder: (BuildContext context, int index) {
+                                                                              if (dataH != null) {
+                                                                                if (widget.vip && dataA![index].exclusive) {
+                                                                                  return TextButton(
+                                                                                      style: ButtonStyle(side: MaterialStatePropertyAll(BorderSide(color: Colors.black)), shape: MaterialStatePropertyAll(LinearBorder(side: BorderSide(color: Colors.black)))),
+                                                                                      onPressed: () async {
+                                                                                        await api.compraTiquete(widget.ced, dataA![index].getIdAsiento(), actual!, dataA![index].getIdHorario());
+                                                                                        Navigator.pop(context);
+                                                                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => super.widget));
+                                                                                      },
+                                                                                      child: Text(
+                                                                                        "Asiento " + dataA![index].getIdAsiento().toString() + "\nOcupado: " + dataA![index].getOcupado().toString() + "\nExclusivo: " + dataA![index].getExclusivo().toString(),
+                                                                                        style: TextStyle(color: Colors.black),
+                                                                                        textAlign: TextAlign.center,
+                                                                                      ));
+                                                                                } else if (!widget.vip && !dataA![index].exclusive) {
+                                                                                  if (dataA![index].ocupado) {
+                                                                                    return TextButton(
+                                                                                        style: ButtonStyle(side: MaterialStatePropertyAll(BorderSide(color: Colors.black)), shape: MaterialStatePropertyAll(LinearBorder(side: BorderSide(color: Colors.black)))),
+                                                                                        onPressed: () {},
+                                                                                        child: Text(
+                                                                                          "Asiento " + dataA![index].getIdAsiento().toString() + "\nOcupado: " + dataA![index].getOcupado().toString() + "\nExclusivo: " + dataA![index].getExclusivo().toString(),
+                                                                                          style: TextStyle(color: Colors.red),
+                                                                                          textAlign: TextAlign.center,
+                                                                                        ));
+                                                                                  } else {
+                                                                                    return TextButton(
+                                                                                        style: ButtonStyle(side: MaterialStatePropertyAll(BorderSide(color: Colors.black)), shape: MaterialStatePropertyAll(LinearBorder(side: BorderSide(color: Colors.black)))),
+                                                                                        onPressed: () async {
+                                                                                          await api.compraTiquete(widget.ced, dataA![index].getIdAsiento(), actual!, dataA![index].getIdHorario());
+                                                                                          Navigator.pop(context);
+                                                                                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => super.widget));
+                                                                                        },
+                                                                                        child: Text(
+                                                                                          "Asiento " + dataA![index].getIdAsiento().toString() + "\nOcupado: " + dataA![index].getOcupado().toString() + "\nExclusivo: " + dataA![index].getExclusivo().toString(),
+                                                                                          style: TextStyle(color: Colors.black),
+                                                                                          textAlign: TextAlign.center,
+                                                                                        ));
+                                                                                  }
+                                                                                }
+                                                                                return null;
+                                                                              } else {
+                                                                                return null;
+                                                                              }
+                                                                            },
+                                                                            separatorBuilder: (BuildContext context, int index) => const Divider()),
+                                                                      ))
+                                                                ],
+                                                              ));
+                                                            });
+                                                      },
+                                                      child: Text(
+                                                        "Hora " +
+                                                            dataH![index]
+                                                                .getHora() +
+                                                            "\nParada: " +
+                                                            dataH![index]
+                                                                .getParada() +
+                                                            "\nCosto: " +
+                                                            dataH![index]
+                                                                .getCostoParada()
+                                                                .toString(),
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ));
+                                                } else {
+                                                  return null;
+                                                }
+                                              },
+                                              separatorBuilder:
+                                                  (BuildContext context,
+                                                          int index) =>
+                                                      const Divider()),
+                                        ))
+                                  ],
+                                ));
+                              });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Icon(
+                              Icons.add,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.02,
+                            ),
+                            const Text(
+                              "Comprar Tiquete",
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      width: MediaQuery.of(context).size.width * 0.85,
+                      child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor: const MaterialStatePropertyAll(
+                                Color.fromARGB(255, 243, 237, 246)),
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)))),
+                        onPressed: () async {},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Icon(
+                              Icons.add,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.02,
+                            ),
+                            const Text(
+                              "Dummy",
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]));
+            } else {
+              return CircularProgressIndicator();
+            }
+          },
+        ));
   }
 }
 
@@ -349,8 +619,17 @@ class BusBAR extends StatefulWidget {
 class _BusBARState extends State<BusBAR> {
   final myController = TextEditingController();
   final apiHandler api = apiHandler();
+  List<Horario>? data;
+  int len = 0;
+
   @override
   Widget build(BuildContext context) {
+    if (data?.length != null) {
+      len = data!.length;
+      print(data!.length);
+    } else {
+      len = 0;
+    }
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.black,
@@ -366,7 +645,7 @@ class _BusBARState extends State<BusBAR> {
                     style: TextStyle(color: Colors.white, fontSize: 25),
                   ),
                   SizedBox(
-                    width: 150,
+                    width: 200,
                     height: 25,
                     child: DecoratedBox(
                         decoration: BoxDecoration(
@@ -523,7 +802,10 @@ class _BusBARState extends State<BusBAR> {
                         Color.fromARGB(255, 243, 237, 246)),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)))),
-                onPressed: () {},
+                onPressed: () async {
+                  data = await api.getHorario();
+                  setState(() {});
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -535,7 +817,7 @@ class _BusBARState extends State<BusBAR> {
                       width: MediaQuery.of(context).size.width * 0.02,
                     ),
                     const Text(
-                      "Buscar Bus",
+                      "Ver Horarios",
                       style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   ],
@@ -566,7 +848,7 @@ class _BusBARState extends State<BusBAR> {
                       width: MediaQuery.of(context).size.width * 0.02,
                     ),
                     const Text(
-                      "Ver paradas",
+                      "Dummy",
                       style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   ],
@@ -583,6 +865,32 @@ class _BusBARState extends State<BusBAR> {
                   color: const Color.fromARGB(255, 243, 237, 246),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: len,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (data != null) {
+                        return Container(
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(14, 0, 0, 0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                            child: Text("Hora " +
+                                data![index].getHora() +
+                                "\nParada: " +
+                                data![index].getParada() +
+                                "\nCosto: " +
+                                data![index].getCostoParada().toString() +
+                                "\nSerie: " +
+                                data![index].gatBusSerie() +
+                                "\n"));
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
                 )),
           ],
         ),
@@ -622,7 +930,7 @@ class _AccBARState extends State<AccBAR> {
                     style: TextStyle(color: Colors.white, fontSize: 25),
                   ),
                   SizedBox(
-                    width: 150,
+                    width: 200,
                     height: 25,
                     child: DecoratedBox(
                         decoration: BoxDecoration(
