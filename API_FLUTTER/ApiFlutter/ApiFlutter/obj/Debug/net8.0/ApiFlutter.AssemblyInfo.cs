@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiFlutter")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+da9b762c719b47cecd660b10074e6cf4e9c16beb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5f8e5b52736fbcd20b20b28e4e933e031d9f2522")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiFlutter")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiFlutter")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

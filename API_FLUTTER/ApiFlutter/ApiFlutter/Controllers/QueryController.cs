@@ -208,6 +208,26 @@ namespace ApiFlutter.Controllers
             }
         }
 
+        [ProducesResponseType(typeof(List<Vehiculo>), (int)HttpStatusCode.OK)]
+        [HttpGet]
+        public async Task<IActionResult> getVehiculo(int cedula)
+        {
+            try
+            {
+                var vehiculo = await _modeloQuery.getVehiculos(cedula);
+                if (vehiculo == null)
+                {
+                    return NotFound();
+                }
+                return Ok(vehiculo);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
         [HttpPost]
         public async Task<IActionResult> compraTiquete(int cedula, int asiento, int parada, int horario)

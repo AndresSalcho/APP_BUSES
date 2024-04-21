@@ -22,6 +22,8 @@ namespace ApiFlutter
         Task<List<Horario>> getHorario();
         Task<List<Asiento>> getAsiento(int parada, int horario);
         Task<List<Tiquete>> getTiquete(int cedula);
+        Task<List<Vehiculo>> getVehiculos(int cedula);
+
 
         Task<bool> compraTiquete(int cedula, int asiento, int parada, int horario);
 

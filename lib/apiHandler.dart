@@ -7,6 +7,7 @@ import 'package:projecto_app1/Horario.dart';
 import 'package:projecto_app1/Tiquete.dart';
 import 'package:projecto_app1/Usuario.dart';
 import 'package:http/http.dart' as http;
+import 'package:projecto_app1/Vehiculo.dart';
 
 class apiHandler {
   Future<List<Usuario>> getAll() async {
@@ -168,6 +169,26 @@ class apiHandler {
       if (response.statusCode >= 200 && response.statusCode <= 299) {
         final List<dynamic> jsonData = json.decode(response.body);
         datos = jsonData.map((json) => Tiquete.fromJson(json)).toList();
+      } else {
+        print('Fallo en el query: ${response.statusCode}.');
+      }
+    } catch (e) {
+      // Handle any errors that occur during the request
+      print('Hubo un error al obtener los datos: $e');
+    }
+    return datos;
+  }
+
+  Future<List<Vehiculo>> getVehiculo(int cedula) async {
+    List<Vehiculo> datos = [];
+    var url = Uri.parse(
+        "https://192.168.100.217:7064/api/Query/getVehiculo?cedula=$cedula");
+
+    try {
+      http.Response response = await http.get(url);
+      if (response.statusCode >= 200 && response.statusCode <= 299) {
+        final List<dynamic> jsonData = json.decode(response.body);
+        datos = jsonData.map((json) => Vehiculo.fromJson(json)).toList();
       } else {
         print('Fallo en el query: ${response.statusCode}.');
       }

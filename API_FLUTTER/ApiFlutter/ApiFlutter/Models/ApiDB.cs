@@ -14,6 +14,8 @@ namespace ApiFlutter.Models
         public DbSet<Horario> horario { get; set; }
         public DbSet<Asiento> asiento { get; set; }
         public DbSet<Tiquete> tiquete { get; set; }
+        public DbSet<Vehiculo> vehiculo { get; set; }
+
 
 
     }

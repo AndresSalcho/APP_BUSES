@@ -107,5 +107,11 @@ namespace ApiFlutter
             int afectado = await _dbContext.Database.ExecuteSqlAsync(query);
             return afectado > 0;
         }
+
+         async Task<List<Vehiculo>> ModeloDatos.getVehiculos(int cedula)
+        {
+            FormattableString query = $"exec SP_getBusesChofer {cedula}";
+            return await _dbContext.Database.SqlQuery<Vehiculo>(query).ToListAsync();
+        }
     }
 }

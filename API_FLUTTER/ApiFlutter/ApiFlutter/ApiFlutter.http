@@ -1,4 +1,4 @@
-@ApiFlutter_HostAddress = http://192.168.100.217:5116
+@ApiFlutter_HostAddress = http://192.168.100.71:5116
 
 GET {{ApiFlutter_HostAddress}}/weatherforecast/
 Accept: application/json

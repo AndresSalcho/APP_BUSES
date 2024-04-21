@@ -1,10 +1,12 @@
 // ignore_for_file: type_init_formals, avoid_print, must_be_immutable
 import 'package:flutter/material.dart';
-import 'package:projecto_app1/Horario.dart';
 import 'package:projecto_app1/Tiquete.dart';
 import 'package:projecto_app1/Chofer.dart';
+import 'package:projecto_app1/Vehiculo.dart';
 import 'package:projecto_app1/apiHandler.dart';
 import 'package:projecto_app1/pantallas/login.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class DrivePage extends StatelessWidget {
   final Chofer? driver;
@@ -58,7 +60,7 @@ class _MainapState extends State<Mainap> {
       ),
       body: <Widget>[
         BusBAR(
-          ced: widget.driver!.getCedula(),
+          driver: widget.driver!,
         ),
         AccBAR(
             ced: widget.driver!.getCedula(),
@@ -70,121 +72,132 @@ class _MainapState extends State<Mainap> {
 }
 
 class BusBAR extends StatefulWidget {
-  BusBAR({super.key, required this.ced});
-  final int ced;
+  BusBAR({super.key, required this.driver});
+  final Chofer? driver;
 
   @override
   State<BusBAR> createState() => _BusBARState();
 }
 
 class _BusBARState extends State<BusBAR> {
-  final myController = TextEditingController();
   final apiHandler api = apiHandler();
-  List<Horario>? data;
+  late Future<List<Vehiculo>> _data;
   int len = 0;
 
   @override
+  void initState() {
+    super.initState();
+    _data = api.getVehiculo(widget.driver!.getCedula());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (data?.length != null) {
-      len = data!.length;
-      print(data!.length);
-    } else {
-      len = 0;
-    }
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: SizedBox(
-            width: double.maxFinite,
-            height: 75,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const Text(
-                    "Buses ABC",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 25),
+        appBar: AppBar(
+            backgroundColor: Colors.black,
+            title: SizedBox(
+              width: double.maxFinite,
+              height: 75,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const Text(
+                      "Buses ABC",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 25),
+                    ),
+                  ]),
+            )),
+        body: FutureBuilder(
+            future: _data,
+            builder: ((context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.data == null) {
+                  len = 0;
+                } else {
+                  len = snapshot.data!.length;
+                }
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.08,
+                          width: MediaQuery.of(context).size.width * 0.85,
+                          child: Center(
+                            child: Text(
+                              "Seleccione el bus a conducir",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          )),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.03,
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.60,
+                          width: MediaQuery.of(context).size.width * 0.85,
+                          child: Material(
+                            color: const Color.fromARGB(255, 243, 237, 246),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: ListView.separated(
+                                padding: const EdgeInsets.all(8),
+                                itemCount: len,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemBuilder: (BuildContext context, int index) {
+                                  if (snapshot.data != null) {
+                                    return TextButton(
+                                        style: ButtonStyle(
+                                            side: MaterialStatePropertyAll(
+                                                BorderSide(
+                                                    color: Colors.black)),
+                                            shape: MaterialStatePropertyAll(
+                                                LinearBorder(
+                                                    side: BorderSide(
+                                                        color: Colors.black)))),
+                                        onPressed: () async {
+                                          Route route = MaterialPageRoute(
+                                              builder: (context) => DriveBAR(
+                                                    user: widget.driver,
+                                                  ));
+                                          Navigator.pushReplacement(
+                                              context, route);
+                                        },
+                                        child: Text(
+                                          "Placa: " +
+                                              snapshot.data![index].placa
+                                                  .toString() +
+                                              "\nHora: " +
+                                              snapshot.data![index].hora +
+                                              "\nDireción: " +
+                                              snapshot.data![index].direccion
+                                                  .toString() +
+                                              "\nDestino: " +
+                                              snapshot.data![index].LugarLlegada
+                                                  .toString(),
+                                          style: TextStyle(color: Colors.black),
+                                          textAlign: TextAlign.center,
+                                        ));
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                separatorBuilder:
+                                    (BuildContext context, int index) =>
+                                        const Divider()),
+                          )),
+                    ],
                   ),
-                ]),
-          )),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.08,
-              width: MediaQuery.of(context).size.width * 0.85,
-              child: TextButton(
-                style: ButtonStyle(
-                    backgroundColor: const MaterialStatePropertyAll(
-                        Color.fromARGB(255, 243, 237, 246)),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)))),
-                onPressed: () async {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.add,
-                      color: Colors.black,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.02,
-                    ),
-                    const Text(
-                      "Ver Horarios",
-                      style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.08,
-              width: MediaQuery.of(context).size.width * 0.85,
-              child: TextButton(
-                style: ButtonStyle(
-                    backgroundColor: const MaterialStatePropertyAll(
-                        Color.fromARGB(255, 243, 237, 246)),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)))),
-                onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.add,
-                      color: Colors.black,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.02,
-                    ),
-                    const Text(
-                      "Dummy",
-                      style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
-            ),
-            SizedBox(
-                height: MediaQuery.of(context).size.height * 0.40,
-                width: MediaQuery.of(context).size.width * 0.85,
-                child: Material(
-                    color: const Color.fromARGB(255, 243, 237, 246),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Text("data"))),
-          ],
-        ),
-      ),
-    );
+                );
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.black,
+                  ),
+                );
+              }
+            })));
   }
 }
 
@@ -207,15 +220,12 @@ class _AccBARState extends State<AccBAR> {
           title: SizedBox(
             width: double.maxFinite,
             height: 75,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const Text(
-                    "Buses ABC",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 25),
-                  ),
-                ]),
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              const Text(
+                "Buses ABC",
+                style: TextStyle(color: Colors.white, fontSize: 25),
+              ),
+            ]),
           )),
       body: Center(
         child: Column(
@@ -360,6 +370,100 @@ class _AccBARState extends State<AccBAR> {
                 ),
               ],
             )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DriveBAR extends StatefulWidget {
+  const DriveBAR({super.key, required this.user});
+  final Chofer? user;
+
+  @override
+  State<DriveBAR> createState() => _DriveBARState();
+}
+
+class _DriveBARState extends State<DriveBAR> {
+  final apiHandler api = apiHandler();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.black,
+          title: SizedBox(
+            width: double.maxFinite,
+            height: 75,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const Text(
+                    "Buses ABC",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 25),
+                  ),
+                ]),
+          )),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SizedBox(
+                height: MediaQuery.of(context).size.height * 0.60,
+                width: MediaQuery.of(context).size.width * 0.85,
+                child: Material(
+                    color: const Color.fromARGB(255, 243, 237, 246),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    child: FlutterMap(
+                        options: MapOptions(
+                          initialCenter: LatLng(10.072701, -84.312180),
+                          initialZoom: 16,
+                        ),
+                        children: [
+                          TileLayer(
+                            urlTemplate:
+                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            userAgentPackageName: 'com.example.app',
+                          ),
+                        ]))),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.08,
+              width: MediaQuery.of(context).size.width * 0.85,
+              child: TextButton(
+                style: ButtonStyle(
+                    backgroundColor: const MaterialStatePropertyAll(
+                        Color.fromARGB(255, 243, 237, 246)),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)))),
+                onPressed: () {
+                  Route route = MaterialPageRoute(
+                      builder: (context) => DrivePage(
+                            driver: widget.user,
+                          ));
+                  Navigator.pushReplacement(context, route);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.add,
+                      color: Colors.black,
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.02,
+                    ),
+                    const Text(
+                      "Dummy",
+                      style: TextStyle(fontSize: 15, color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

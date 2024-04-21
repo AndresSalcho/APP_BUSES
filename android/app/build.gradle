@@ -23,9 +23,6 @@ if (flutterVersionName == null) {
 }
 
 android {
-    defaultConfig{
-        minSdkVersion 20
-    }
 
     namespace "com.example.projecto_app1"
     compileSdk flutter.compileSdkVersion
