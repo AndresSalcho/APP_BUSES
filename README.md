@@ -1,6 +1,6 @@
-# projecto_app1
+# APP BUSES
 
-A new Flutter project.
+Projecto para Bases de Datos II
 
 ## Getting Started
 
