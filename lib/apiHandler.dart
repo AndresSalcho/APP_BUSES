@@ -12,7 +12,7 @@ import 'package:projecto_app1/Vehiculo.dart';
 class apiHandler {
   Future<List<Usuario>> getAll() async {
     List<Usuario> datos = [];
-    var url = Uri.parse("https://192.168.100.217:7064/api/Query/getAll");
+    var url = Uri.parse("https://busesapi.ddns.net:7064/api/Query/getAll");
 
     try {
       http.Response response = await http.get(url);
@@ -30,7 +30,7 @@ class apiHandler {
   }
 
   Future<void> addUsuario({required Usuario user}) async {
-    var url = Uri.parse("https://192.168.100.217:7064/api/Query/addUser");
+    var url = Uri.parse("https://busesapi.ddns.net:7064/api/Query/addUser");
     Map<String, String> headers = {"Content-type": "application/json"};
 
     String jsonBody = json.encode(user.toJson());
@@ -52,7 +52,7 @@ class apiHandler {
 
   Future<Usuario?> getUsuario(int ced, String pass) async {
     var url = Uri.parse(
-        "https://192.168.100.217:7064/api/Query/getUser?cedula=$ced&contrasena=$pass");
+        "https://busesapi.ddns.net:7064/api/Query/getUser?cedula=$ced&contrasena=$pass");
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
@@ -70,7 +70,7 @@ class apiHandler {
 
   Future<Chofer?> getChofer(int ced, String pass) async {
     var url = Uri.parse(
-        "https://192.168.100.217:7064/api/Query/getChofer?cedula=$ced&contrasena=$pass");
+        "https://busesapi.ddns.net:7064/api/Query/getChofer?cedula=$ced&contrasena=$pass");
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
@@ -88,7 +88,7 @@ class apiHandler {
 
   Future<int?> checkExists(int ced) async {
     var url = Uri.parse(
-        "https://192.168.100.217:7064/api/Query/checkExists?cedula=$ced");
+        "https://busesapi.ddns.net:7064/api/Query/checkExists?cedula=$ced");
     try {
       http.Response response = await http.get(url);
       if (response.statusCode == 200) {
@@ -106,7 +106,7 @@ class apiHandler {
 
   Future<void> updateSaldo(int ced, double ammount) async {
     var url = Uri.parse(
-        "https://192.168.100.217:7064/api/Query/updateSaldo?cedula=$ced&ammount=$ammount");
+        "https://busesapi.ddns.net:7064/api/Query/updateSaldo?cedula=$ced&ammount=$ammount");
     try {
       http.Response response = await http.post(url);
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -122,7 +122,7 @@ class apiHandler {
 
   Future<List<Horario>> getHorario() async {
     List<Horario> datos = [];
-    var url = Uri.parse("https://192.168.100.217:7064/api/Query/getHorario");
+    var url = Uri.parse("https://busesapi.ddns.net:7064/api/Query/getHorario");
 
     try {
       http.Response response = await http.get(url);
@@ -142,7 +142,7 @@ class apiHandler {
   Future<List<Asiento>> getAsiento(int parada, int horario) async {
     List<Asiento> datos = [];
     var url = Uri.parse(
-        "https://192.168.100.217:7064/api/Query/getAsiento?parada=$parada&horario=$horario");
+        "https://busesapi.ddns.net:7064/api/Query/getAsiento?parada=$parada&horario=$horario");
 
     try {
       http.Response response = await http.get(url);
@@ -162,7 +162,7 @@ class apiHandler {
   Future<List<Tiquete>> getTiquete(int cedula) async {
     List<Tiquete> datos = [];
     var url = Uri.parse(
-        "https://192.168.100.217:7064/api/Query/getTiquete?cedula=$cedula");
+        "https://busesapi.ddns.net:7064/api/Query/getTiquete?cedula=$cedula");
 
     try {
       http.Response response = await http.get(url);
@@ -182,7 +182,7 @@ class apiHandler {
   Future<List<Vehiculo>> getVehiculo(int cedula) async {
     List<Vehiculo> datos = [];
     var url = Uri.parse(
-        "https://192.168.100.217:7064/api/Query/getVehiculo?cedula=$cedula");
+        "https://busesapi.ddns.net:7064/api/Query/getVehiculo?cedula=$cedula");
 
     try {
       http.Response response = await http.get(url);
@@ -202,7 +202,7 @@ class apiHandler {
   Future<void> compraTiquete(
       int ced, int asiento, int parada, int horario) async {
     var url = Uri.parse(
-        "https://192.168.100.217:7064/api/Query/compraTiquete?cedula=$ced&asiento=$asiento&parada=$parada&horario=$horario");
+        "https://busesapi.ddns.net:7064/api/Query/compraTiquete?cedula=$ced&asiento=$asiento&parada=$parada&horario=$horario");
     try {
       http.Response response = await http.post(url);
       if (response.statusCode == 400) {

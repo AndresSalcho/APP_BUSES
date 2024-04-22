@@ -38,6 +38,10 @@ dependencies:
   http: ^1.2.1
   dio: ^5.4.1
   flutter_map: ^6.1.0
+  geolocator: ^11.0.0
+  google_polyline_algorithm: ^3.1.0
+  osrm: ^0.0.5
+  location: ^6.0.1
 
 dev_dependencies:
   flutter_test:
