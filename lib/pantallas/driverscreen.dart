@@ -2,8 +2,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:osrm/osrm.dart';
+import 'package:projecto_app1/Location.dart';
 import 'package:projecto_app1/Tiquete.dart';
 import 'package:projecto_app1/Chofer.dart';
 import 'package:projecto_app1/Vehiculo.dart';
@@ -165,6 +166,9 @@ class _BusBARState extends State<BusBAR> {
                                           Route route = MaterialPageRoute(
                                               builder: (context) => DriveBAR(
                                                     user: widget.driver,
+                                                    busSerie: snapshot
+                                                        .data![index]
+                                                        .getbusSerie(),
                                                   ));
                                           Navigator.pushReplacement(
                                               context, route);
@@ -383,8 +387,9 @@ class _AccBARState extends State<AccBAR> {
 }
 
 class DriveBAR extends StatefulWidget {
-  const DriveBAR({super.key, required this.user});
+  const DriveBAR({super.key, required this.user, required this.busSerie});
   final Chofer? user;
+  final String? busSerie;
 
   @override
   State<DriveBAR> createState() => _DriveBARState();
@@ -393,64 +398,31 @@ class DriveBAR extends StatefulWidget {
 class _DriveBARState extends State<DriveBAR> {
   final apiHandler api = apiHandler();
   final Routemap route = Routemap();
-  LatLng destino = LatLng(10.071945, -84.313590);
-  late Future<LatLng?> myPos;
+  LatLng? destino;
+  LatLng? myPos;
   late Future<bool?> state;
   late MapController _mapController;
-  late var puntos = <LatLng>[];
+  late List<LatLng>? puntos;
+  late List<LatLng>? stored;
   Osrm osrm = Osrm();
-  Timer? _timer;
-  List<Marker> markers = [];
+  bool start = false;
+  String? text;
+  IconData? ico;
 
-  Future<void> getRuta(double currentLat, double currentLon, double destinoLat,
-      double destinoLon) async {
-    try {
-      RouteRequest opcion = RouteRequest(
-          coordinates: [(currentLon, currentLat), (destinoLon, destinoLat)],
-          overview: OsrmOverview.full);
+  Future<bool> getLocs(String busS, double lat, double lon) async {
+    Location? aux;
+    aux = await api.getLocationParada(busS);
+    destino = new LatLng(aux!.latitud, aux.longitud);
 
-      RouteResponse ruta = await osrm.route(opcion);
-
-      puntos = ruta.routes.first.geometry!.lineString!.coordinates.map((e) {
-        var location = e.toLocation();
-        return LatLng(location.lat, location.lng);
-      }).toList();
-    } catch (e) {
-      print("Error: $e");
-    }
-  }
-
-  void _updateMarkers() async {
-    var newPos = await route.getLocation();
-
-    // Update the markers list with the new position
-    markers = [
-      Marker(
-        point:
-            LatLng(newPos!.latitude, newPos.longitude), // Use the new position
-        width: 80,
-        height: 80,
-        child: Icon(Icons.navigation, color: Colors.red),
-      ),
-      Marker(
-        point: destino, // Use the new position
-        width: 80,
-        height: 80,
-        child: Icon(Icons.location_on, color: Colors.red),
-      ),
-      // Add other markers if needed
-    ];
-
-    await getRuta(
-        newPos.latitude, newPos.longitude, destino.latitude, destino.longitude);
+    stored =
+        await route.getRuta(lat, lon, destino!.latitude, destino!.longitude);
+    return true;
   }
 
   @override
   void initState() {
     super.initState();
-    myPos = route.getLocation();
     _mapController = MapController();
-    new Timer.periodic(Duration(seconds: 2), (Timer t) => _updateMarkers());
   }
 
   @override
@@ -458,6 +430,7 @@ class _DriveBARState extends State<DriveBAR> {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.black,
+            foregroundColor: Colors.white,
             title: SizedBox(
               width: double.maxFinite,
               height: 75,
@@ -471,157 +444,211 @@ class _DriveBARState extends State<DriveBAR> {
                     ),
                   ]),
             )),
-        body: FutureBuilder(
-            future: myPos,
+        body: StreamBuilder<Position>(
+            stream: Geolocator.getPositionStream(),
             builder: ((context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.data != null) {
-                  return FutureBuilder(
-                      future: getRuta(
-                          snapshot.data!.latitude,
-                          snapshot.data!.longitude,
-                          destino.latitude,
-                          destino.longitude),
-                      builder: ((context, snapshot2) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          markers = [
-                            Marker(
-                              point: snapshot.data!, // Use the new position
-                              width: 80,
-                              height: 80,
-                              child: Icon(Icons.navigation, color: Colors.red),
-                            ),
-                            Marker(
-                              point: destino, // Use the new position
-                              width: 80,
-                              height: 80,
-                              child: Icon(Icons.location_on, color: Colors.red),
-                            ),
-                            // Add other markers if needed
-                          ];
-                          return Center(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.60,
-                                    width: MediaQuery.of(context).size.width *
-                                        0.85,
-                                    child: Material(
-                                        color: const Color.fromARGB(
-                                            255, 243, 237, 246),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        child: FlutterMap(
-                                            mapController: _mapController,
-                                            options: MapOptions(
-                                              initialCenter: snapshot.data!,
-                                              initialZoom: 16,
-                                            ),
-                                            children: [
-                                              TileLayer(
-                                                urlTemplate:
-                                                    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                                                userAgentPackageName:
-                                                    'com.example.app',
-                                              ),
-                                              PolylineLayer(polylines: [
-                                                Polyline(
-                                                    points: puntos,
-                                                    color: Colors.black,
-                                                    strokeWidth: 6)
-                                              ]),
-                                              MarkerLayer(markers: markers),
-                                            ]))),
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.08,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.85,
-                                  child: TextButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            const MaterialStatePropertyAll(
-                                                Color.fromARGB(
-                                                    255, 243, 237, 246)),
-                                        shape: MaterialStateProperty.all(
-                                            RoundedRectangleBorder(
+              if (snapshot.hasData) {
+                myPos =
+                    LatLng(snapshot.data!.latitude, snapshot.data!.longitude);
+                return FutureBuilder(
+                    future: api.setLocation(
+                        widget.busSerie!, myPos!.latitude, myPos!.longitude),
+                    builder: ((context, sanp) {
+                      return FutureBuilder(
+                          future: getLocs(
+                              widget.busSerie!,
+                              snapshot.data!.latitude,
+                              snapshot.data!.longitude),
+                          builder: (((context, snapshot2) {
+                            if (snapshot2.hasData) {
+                              if (start) {
+                                puntos = stored;
+                                text = "Terminar Viaje";
+                                ico = Icons.stop;
+                              } else {
+                                puntos = new List.empty();
+                                text = "Empezar Viaje";
+                                ico = Icons.play_arrow;
+                              }
+                              return Center(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.60,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.85,
+                                        child: Material(
+                                            color: const Color.fromARGB(
+                                                255, 243, 237, 246),
+                                            shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(
-                                                        15)))),
-                                    onPressed: () {
-                                      Route route = MaterialPageRoute(
-                                          builder: (context) => DrivePage(
-                                                driver: widget.user,
-                                              ));
-                                      Navigator.pushReplacement(context, route);
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        const Icon(
-                                          Icons.add,
-                                          color: Colors.black,
+                                                    BorderRadius.circular(15)),
+                                            child: FlutterMap(
+                                                mapController: _mapController,
+                                                options: MapOptions(
+                                                    initialCenter: myPos!,
+                                                    initialZoom: 16,
+                                                    maxZoom: 20,
+                                                    minZoom: 15),
+                                                children: [
+                                                  TileLayer(
+                                                    urlTemplate:
+                                                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                                    userAgentPackageName:
+                                                        'com.example.app',
+                                                  ),
+                                                  PolylineLayer(polylines: [
+                                                    Polyline(
+                                                        points: puntos!,
+                                                        color: Colors.black,
+                                                        strokeWidth: 6)
+                                                  ]),
+                                                  MarkerLayer(markers: [
+                                                    Marker(
+                                                      point:
+                                                          myPos!, // Use the new position
+                                                      width: 80,
+                                                      height: 80,
+                                                      child: Icon(
+                                                          Icons.navigation,
+                                                          color: Colors.red),
+                                                    ),
+                                                    Marker(
+                                                      point:
+                                                          destino!, // Use the new position
+                                                      width: 80,
+                                                      height: 80,
+                                                      child: Icon(
+                                                          Icons.location_on,
+                                                          color: Colors.red),
+                                                    ),
+                                                    // Add other markers if needed
+                                                  ]),
+                                                ]))),
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.08,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.85,
+                                      child: TextButton(
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                const MaterialStatePropertyAll(
+                                                    Color.fromARGB(
+                                                        255, 243, 237, 246)),
+                                            shape: MaterialStateProperty.all(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)))),
+                                        onPressed: () {
+                                          setState(() {
+                                            if (!start) {
+                                              start = true;
+                                              _mapController.move(myPos!, 18);
+                                            } else {
+                                              start = false;
+                                              _mapController.move(myPos!, 15);
+                                            }
+                                          });
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              ico!,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.02,
+                                            ),
+                                            Text(
+                                              text!,
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black),
+                                            ),
+                                          ],
                                         ),
-                                        SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.02,
-                                        ),
-                                        const Text(
-                                          "Dummy",
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.black),
-                                        ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.08,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.85,
+                                      child: TextButton(
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                const MaterialStatePropertyAll(
+                                                    Color.fromARGB(
+                                                        255, 243, 237, 246)),
+                                            shape: MaterialStateProperty.all(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)))),
+                                        onPressed: () {
+                                          Route route = MaterialPageRoute(
+                                              builder: (context) => DrivePage(
+                                                    driver: widget.user,
+                                                  ));
+                                          Navigator.pushReplacement(
+                                              context, route);
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            const Icon(
+                                              Icons.arrow_back,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.02,
+                                            ),
+                                            const Text(
+                                              "Volver",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          );
-                        } else {
-                          return Center(
-                              child: CircularProgressIndicator(
-                            color: Colors.black,
-                          ));
-                        }
-                      }));
-                } else {
-                  return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.08,
-                      width: MediaQuery.of(context).size.width * 0.85,
-                      child: TextButton(
-                          style: ButtonStyle(
-                              backgroundColor: const MaterialStatePropertyAll(
-                                  Color.fromARGB(255, 243, 237, 246)),
-                              shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(15)))),
-                          onPressed: () {
-                            Route route = MaterialPageRoute(
-                                builder: (context) => DrivePage(
-                                      driver: widget.user,
-                                    ));
-                            Navigator.pushReplacement(context, route);
-                          },
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [const Text("NULL")])));
-                }
-              }
-              return Center(
-                child: CircularProgressIndicator(
+                              );
+                            } else {
+                              return Center(
+                                  child: CircularProgressIndicator(
+                                color: Colors.black,
+                              ));
+                            }
+                          })));
+                    }));
+              } else {
+                return Center(
+                    child: CircularProgressIndicator(
                   color: Colors.black,
-                ),
-              );
+                ));
+              }
             })));
   }
 }

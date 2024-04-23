@@ -1,0 +1,475 @@
+@startuml App_Diagram
+
+set namespaceSeparator ::
+
+class "projecto_app1::apiHandler.dart::apiHandler" {
+  +dynamic getAll()
+  +dynamic addUsuario()
+  +dynamic getUsuario()
+  +dynamic getChofer()
+  +dynamic checkExists()
+  +dynamic updateSaldo()
+  +dynamic getHorario()
+  +dynamic getAsiento()
+  +dynamic getTiquete()
+  +dynamic getVehiculo()
+  +dynamic compraTiquete()
+  +dynamic setLocation()
+  +dynamic getLocation()
+  +dynamic getLocationParada()
+}
+
+class "projecto_app1::Asiento.dart::Asiento" {
+  +int idHorario
+  +String hora
+  +String direccionParada
+  +int costoParada
+  +String busSerie
+  +String estado
+  +int idAsiento
+  +bool ocupado
+  +bool exclusive
+  +int clientePresente
+  +int getIdHorario()
+  +String getHora()
+  +String getParada()
+  +int getCostoParada()
+  +String getBusSerie()
+  +String getEstado()
+  +int getIdAsiento()
+  +bool getOcupado()
+  +bool getExclusivo()
+  +int getPresente()
+}
+
+class "projecto_app1::Chofer.dart::Chofer" {
+  +int Cedula
+  +String Nombre
+  +String Apellidos
+  +int Telefono
+  +String Direccion
+  +String Contrasena
+  +int getCedula()
+  +String getNombre()
+  +String getApellidos()
+  +int getTelefono()
+  +String getDireccion()
+  +String toString()
+  +Map<String, dynamic> toJson()
+}
+
+class "projecto_app1::Horario.dart::Horario" {
+  +int idHorario
+  +String Hora
+  +int idParada
+  +String Parada
+  +int CostoParada
+  +String BusSerie
+  +int getIdHorario()
+  +String getHora()
+  +int getIdParada()
+  +String getParada()
+  +int getCostoParada()
+  +String gatBusSerie()
+}
+
+class "projecto_app1::Location.dart::Location" {
+  +double latitud
+  +double longitud
+  +double getLatitud()
+  +double getLongitud()
+}
+
+class "projecto_app1::main.dart::MyHttpOverrides" {
+  +HttpClient createHttpClient()
+}
+
+"dart::_http::HttpOverrides" <|-- "projecto_app1::main.dart::MyHttpOverrides"
+
+class "projecto_app1::main.dart::App" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "projecto_app1::main.dart::App"
+
+class "projecto_app1::pantallas::driverscreen.dart::DrivePage" {
+  +Chofer? driver
+  +Widget build()
+}
+
+"projecto_app1::pantallas::driverscreen.dart::DrivePage" o-- "projecto_app1::Chofer.dart::Chofer"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "projecto_app1::pantallas::driverscreen.dart::DrivePage"
+
+class "projecto_app1::pantallas::driverscreen.dart::Mainap" {
+  +Chofer? driver
+  +State<Mainap> createState()
+}
+
+"projecto_app1::pantallas::driverscreen.dart::Mainap" o-- "projecto_app1::Chofer.dart::Chofer"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "projecto_app1::pantallas::driverscreen.dart::Mainap"
+
+class "projecto_app1::pantallas::driverscreen.dart::_MainapState" {
+  +int currentPageIndex
+  +apiHandler api
+  +List<Tiquete>? data
+  +Widget build()
+}
+
+"projecto_app1::pantallas::driverscreen.dart::_MainapState" o-- "projecto_app1::apiHandler.dart::apiHandler"
+"flutter::src::widgets::framework.dart::State" <|-- "projecto_app1::pantallas::driverscreen.dart::_MainapState"
+
+class "projecto_app1::pantallas::driverscreen.dart::BusBAR" {
+  +Chofer? driver
+  +State<BusBAR> createState()
+}
+
+"projecto_app1::pantallas::driverscreen.dart::BusBAR" o-- "projecto_app1::Chofer.dart::Chofer"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "projecto_app1::pantallas::driverscreen.dart::BusBAR"
+
+class "projecto_app1::pantallas::driverscreen.dart::_BusBARState" {
+  +apiHandler api
+  -dynamic _data
+  +int len
+  +void initState()
+  +Widget build()
+}
+
+"projecto_app1::pantallas::driverscreen.dart::_BusBARState" o-- "projecto_app1::apiHandler.dart::apiHandler"
+"flutter::src::widgets::framework.dart::State" <|-- "projecto_app1::pantallas::driverscreen.dart::_BusBARState"
+
+class "projecto_app1::pantallas::driverscreen.dart::AccBAR" {
+  +int ced
+  +String usern
+  +State<AccBAR> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "projecto_app1::pantallas::driverscreen.dart::AccBAR"
+
+class "projecto_app1::pantallas::driverscreen.dart::_AccBARState" {
+  +apiHandler api
+  +Widget build()
+}
+
+"projecto_app1::pantallas::driverscreen.dart::_AccBARState" o-- "projecto_app1::apiHandler.dart::apiHandler"
+"flutter::src::widgets::framework.dart::State" <|-- "projecto_app1::pantallas::driverscreen.dart::_AccBARState"
+
+class "projecto_app1::pantallas::driverscreen.dart::DriveBAR" {
+  +Chofer? user
+  +String? busSerie
+  +State<DriveBAR> createState()
+}
+
+"projecto_app1::pantallas::driverscreen.dart::DriveBAR" o-- "projecto_app1::Chofer.dart::Chofer"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "projecto_app1::pantallas::driverscreen.dart::DriveBAR"
+
+class "projecto_app1::pantallas::driverscreen.dart::_DriveBARState" {
+  +apiHandler api
+  +Routemap route
+  +LatLng? destino
+  +LatLng? myPos
+  +dynamic state
+  -MapController _mapController
+  +List<LatLng>? puntos
+  +List<LatLng>? stored
+  +Osrm osrm
+  +bool start
+  +String? text
+  +IconData? ico
+  +dynamic getLocs()
+  +void initState()
+  +Widget build()
+}
+
+"projecto_app1::pantallas::driverscreen.dart::_DriveBARState" o-- "projecto_app1::apiHandler.dart::apiHandler"
+"projecto_app1::pantallas::driverscreen.dart::_DriveBARState" o-- "projecto_app1::routeMap.dart::Routemap"
+"projecto_app1::pantallas::driverscreen.dart::_DriveBARState" o-- "latlong2::latlong.dart::LatLng"
+"projecto_app1::pantallas::driverscreen.dart::_DriveBARState" o-- "flutter_map::src::map::controller::map_controller.dart::MapController"
+"projecto_app1::pantallas::driverscreen.dart::_DriveBARState" o-- "osrm::osrm.dart::Osrm"
+"projecto_app1::pantallas::driverscreen.dart::_DriveBARState" o-- "flutter::src::widgets::icon_data.dart::IconData"
+"flutter::src::widgets::framework.dart::State" <|-- "projecto_app1::pantallas::driverscreen.dart::_DriveBARState"
+
+class "projecto_app1::pantallas::forgotpass.dart::ForgottenPage" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "projecto_app1::pantallas::forgotpass.dart::ForgottenPage"
+
+class "projecto_app1::pantallas::forgotpass.dart::Forgot" {
+  +double w
+  +State<Forgot> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "projecto_app1::pantallas::forgotpass.dart::Forgot"
+
+class "projecto_app1::pantallas::forgotpass.dart::_ForgotState" {
+  -GlobalKey<FormState> _formKey
+  +Widget build()
+}
+
+"projecto_app1::pantallas::forgotpass.dart::_ForgotState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"flutter::src::widgets::framework.dart::State" <|-- "projecto_app1::pantallas::forgotpass.dart::_ForgotState"
+
+class "projecto_app1::pantallas::login.dart::LoginPage" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "projecto_app1::pantallas::login.dart::LoginPage"
+
+class "projecto_app1::pantallas::login.dart::LoginBox" {
+  +double h
+  +double w
+  +State<LoginBox> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "projecto_app1::pantallas::login.dart::LoginBox"
+
+class "projecto_app1::pantallas::login.dart::_LoginBoxState" {
+  +apiHandler api
+  +List<Tiquete> data
+  +Usuario? user
+  +Chofer? driver
+  -GlobalKey<FormState> _formKey
+  +int ced
+  +String pass
+  +bool valid
+  +dynamic getUsuario()
+  +dynamic getChofer()
+  +dynamic getHorario()
+  +Widget build()
+}
+
+"projecto_app1::pantallas::login.dart::_LoginBoxState" o-- "projecto_app1::apiHandler.dart::apiHandler"
+"projecto_app1::pantallas::login.dart::_LoginBoxState" o-- "projecto_app1::Usuario.dart::Usuario"
+"projecto_app1::pantallas::login.dart::_LoginBoxState" o-- "projecto_app1::Chofer.dart::Chofer"
+"projecto_app1::pantallas::login.dart::_LoginBoxState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"flutter::src::widgets::framework.dart::State" <|-- "projecto_app1::pantallas::login.dart::_LoginBoxState"
+
+class "projecto_app1::pantallas::mainscreen.dart::MainPage" {
+  +Usuario? user
+  +Widget build()
+}
+
+"projecto_app1::pantallas::mainscreen.dart::MainPage" o-- "projecto_app1::Usuario.dart::Usuario"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "projecto_app1::pantallas::mainscreen.dart::MainPage"
+
+class "projecto_app1::pantallas::mainscreen.dart::Mainap" {
+  +Usuario? user
+  +State<Mainap> createState()
+}
+
+"projecto_app1::pantallas::mainscreen.dart::Mainap" o-- "projecto_app1::Usuario.dart::Usuario"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "projecto_app1::pantallas::mainscreen.dart::Mainap"
+
+class "projecto_app1::pantallas::mainscreen.dart::_MainapState" {
+  +int currentPageIndex
+  +apiHandler api
+  +List<Tiquete>? data
+  +Widget build()
+}
+
+"projecto_app1::pantallas::mainscreen.dart::_MainapState" o-- "projecto_app1::apiHandler.dart::apiHandler"
+"flutter::src::widgets::framework.dart::State" <|-- "projecto_app1::pantallas::mainscreen.dart::_MainapState"
+
+class "projecto_app1::pantallas::mainscreen.dart::MainBAR" {
+  +double mon
+  +bool vip
+  +int ced
+  +State<MainBAR> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "projecto_app1::pantallas::mainscreen.dart::MainBAR"
+
+class "projecto_app1::pantallas::mainscreen.dart::_MainBARState" {
+  +TextEditingController myController
+  +apiHandler api
+  +List<Horario>? dataH
+  +List<Asiento>? dataA
+  +int? actual
+  +int len
+  -dynamic _data
+  +void initState()
+  +Widget build()
+}
+
+"projecto_app1::pantallas::mainscreen.dart::_MainBARState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"projecto_app1::pantallas::mainscreen.dart::_MainBARState" o-- "projecto_app1::apiHandler.dart::apiHandler"
+"flutter::src::widgets::framework.dart::State" <|-- "projecto_app1::pantallas::mainscreen.dart::_MainBARState"
+
+class "projecto_app1::pantallas::mainscreen.dart::BusBAR" {
+  +double mon
+  +int ced
+  +State<BusBAR> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "projecto_app1::pantallas::mainscreen.dart::BusBAR"
+
+class "projecto_app1::pantallas::mainscreen.dart::_BusBARState" {
+  +TextEditingController myController
+  +apiHandler api
+  +List<Horario>? data
+  +int len
+  +Widget build()
+}
+
+"projecto_app1::pantallas::mainscreen.dart::_BusBARState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"projecto_app1::pantallas::mainscreen.dart::_BusBARState" o-- "projecto_app1::apiHandler.dart::apiHandler"
+"flutter::src::widgets::framework.dart::State" <|-- "projecto_app1::pantallas::mainscreen.dart::_BusBARState"
+
+class "projecto_app1::pantallas::mainscreen.dart::AccBAR" {
+  +double mon
+  +int ced
+  +String usern
+  +State<AccBAR> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "projecto_app1::pantallas::mainscreen.dart::AccBAR"
+
+class "projecto_app1::pantallas::mainscreen.dart::_AccBARState" {
+  +TextEditingController myController
+  +apiHandler api
+  +Widget build()
+}
+
+"projecto_app1::pantallas::mainscreen.dart::_AccBARState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"projecto_app1::pantallas::mainscreen.dart::_AccBARState" o-- "projecto_app1::apiHandler.dart::apiHandler"
+"flutter::src::widgets::framework.dart::State" <|-- "projecto_app1::pantallas::mainscreen.dart::_AccBARState"
+
+class "projecto_app1::pantallas::mainscreen.dart::MapBar" {
+  +String busSerie
+  +State<MapBar> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "projecto_app1::pantallas::mainscreen.dart::MapBar"
+
+class "projecto_app1::pantallas::mainscreen.dart::_MapBarState" {
+  +apiHandler api
+  +Routemap route
+  +LatLng? destino
+  +LatLng? bus
+  +LatLng? myPos
+  +dynamic state
+  -MapController _mapController
+  +List<LatLng>? puntos
+  +Osrm osrm
+  +bool start
+  +String? text
+  +IconData? ico
+  +void initState()
+  +dynamic getLocs()
+  +Widget build()
+}
+
+"projecto_app1::pantallas::mainscreen.dart::_MapBarState" o-- "projecto_app1::apiHandler.dart::apiHandler"
+"projecto_app1::pantallas::mainscreen.dart::_MapBarState" o-- "projecto_app1::routeMap.dart::Routemap"
+"projecto_app1::pantallas::mainscreen.dart::_MapBarState" o-- "latlong2::latlong.dart::LatLng"
+"projecto_app1::pantallas::mainscreen.dart::_MapBarState" o-- "flutter_map::src::map::controller::map_controller.dart::MapController"
+"projecto_app1::pantallas::mainscreen.dart::_MapBarState" o-- "osrm::osrm.dart::Osrm"
+"projecto_app1::pantallas::mainscreen.dart::_MapBarState" o-- "flutter::src::widgets::icon_data.dart::IconData"
+"flutter::src::widgets::framework.dart::State" <|-- "projecto_app1::pantallas::mainscreen.dart::_MapBarState"
+
+class "projecto_app1::pantallas::register.dart::RegPage" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "projecto_app1::pantallas::register.dart::RegPage"
+
+class "projecto_app1::pantallas::register.dart::RegBox" {
+  +double w
+  +State<RegBox> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "projecto_app1::pantallas::register.dart::RegBox"
+
+class "projecto_app1::pantallas::register.dart::_RegBoxState" {
+  +TextEditingController myController
+  -GlobalKey<FormState> _formKey
+  +String nom
+  +String app
+  +String ced
+  +String tel
+  +String direccion
+  +String pass1
+  +String pass2
+  +String aux
+  +TextEditingController cont
+  +bool exits
+  +apiHandler api
+  +bool checkedValue
+  +dynamic checkUser()
+  +bool checkNombre()
+  +bool checkPhone()
+  +bool checkCed()
+  +bool checkPass()
+  +Widget build()
+}
+
+"projecto_app1::pantallas::register.dart::_RegBoxState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"projecto_app1::pantallas::register.dart::_RegBoxState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"projecto_app1::pantallas::register.dart::_RegBoxState" o-- "projecto_app1::apiHandler.dart::apiHandler"
+"flutter::src::widgets::framework.dart::State" <|-- "projecto_app1::pantallas::register.dart::_RegBoxState"
+
+class "projecto_app1::routeMap.dart::Routemap" {
+  +Osrm osrm
+  +dynamic determinarPermisos()
+  +dynamic getLocation()
+  +dynamic getRuta()
+}
+
+"projecto_app1::routeMap.dart::Routemap" o-- "osrm::osrm.dart::Osrm"
+
+class "projecto_app1::Tiquete.dart::Tiquete" {
+  +int idPago
+  +int cedulaCliente
+  +String descripcipon
+  +String fecha
+  +String numeroSerieBus
+  +int costo
+  +String LugarLlegada
+  +String LugarSalida
+  +int getIdPago()
+  +int getCedulaCliente()
+  +String getDescripcion()
+  +String getFecha()
+  +String getSerieBus()
+  +int getCosto()
+  +String getLugarLL()
+  +String getLugarS()
+}
+
+class "projecto_app1::Usuario.dart::Usuario" {
+  +int Cedula
+  +String Nombre
+  +String Apellidos
+  +int Telefono
+  +String Direccion
+  +String Contrasena
+  +double Saldo
+  +bool Discapacitado
+  +int getCedula()
+  +String getNombre()
+  +String getApellidos()
+  +int getTelefono()
+  +String getDireccion()
+  +double getSaldo()
+  +bool getDiscapacitado()
+  +String toString()
+  +Map<String, dynamic> toJson()
+}
+
+class "projecto_app1::Vehiculo.dart::Vehiculo" {
+  +String BusSerie
+  +String placa
+  +String hora
+  +String direccion
+  +String LugarLlegada
+  +String LugarSalida
+  +String getbusSerie()
+  +String getPlaca()
+  +String getHora()
+  +String getDireccion()
+  +String getLugarLL()
+  +String getLugarS()
+}
+
+
+@enduml

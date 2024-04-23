@@ -108,10 +108,29 @@ namespace ApiFlutter
             return afectado > 0;
         }
 
-         async Task<List<Vehiculo>> ModeloDatos.getVehiculos(int cedula)
+        async Task<List<Vehiculo>> ModeloDatos.getVehiculos(int cedula)
         {
             FormattableString query = $"exec SP_getBusesChofer {cedula}";
             return await _dbContext.Database.SqlQuery<Vehiculo>(query).ToListAsync();
+        }
+
+        async Task<bool> ModeloDatos.addLocation(string BusSerie, double lat, double lon)
+        {
+            FormattableString query = $"exec SP_setLocation {BusSerie},{lat},{lon}";
+            int afectado = await _dbContext.Database.ExecuteSqlAsync(query);
+            return afectado > 0;
+        }
+
+        async Task<Location> ModeloDatos.getLocation(string BusSerie)
+        {
+            FormattableString query = $"exec SP_getLocation {BusSerie}";
+            return _dbContext.Database.SqlQuery<Location>(query).AsEnumerable().FirstOrDefault();
+        }
+
+        async Task<Location> ModeloDatos.getLocationParada(string BusSerie)
+        {
+            FormattableString query = $"exec SP_getRutaCoords {BusSerie}";
+            return _dbContext.Database.SqlQuery<Location>(query).AsEnumerable().FirstOrDefault();
         }
     }
 }

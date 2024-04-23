@@ -27,11 +27,9 @@ namespace ApiFlutter
 
         Task<bool> compraTiquete(int cedula, int asiento, int parada, int horario);
 
-
-
-
-
-
+        Task<bool> addLocation(string BusSerie, double lat, double lon);
+        Task<Location> getLocation(string BusSerie);
+        Task<Location> getLocationParada(string BusSerie);
 
     }
 }

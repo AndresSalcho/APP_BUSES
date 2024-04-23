@@ -1,11 +1,17 @@
 // ignore_for_file: type_init_formals, avoid_print, must_be_immutable
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:osrm/osrm.dart';
 import 'package:projecto_app1/Asiento.dart';
 import 'package:projecto_app1/Horario.dart';
+import 'package:projecto_app1/Location.dart';
 import 'package:projecto_app1/Tiquete.dart';
 import 'package:projecto_app1/Usuario.dart';
 import 'package:projecto_app1/apiHandler.dart';
 import 'package:projecto_app1/pantallas/login.dart';
+import 'package:projecto_app1/routeMap.dart';
+import 'package:latlong2/latlong.dart';
 
 class MainPage extends StatelessWidget {
   final Usuario? user;
@@ -325,7 +331,15 @@ class _MainBARState extends State<MainBAR> {
                                                             side: BorderSide(
                                                                 color: Colors
                                                                     .black)))),
-                                                onPressed: () async {},
+                                                onPressed: () async {
+                                                  Route route = MaterialPageRoute(
+                                                      builder: (context) => MapBar(
+                                                          busSerie: snapshot
+                                                              .data![index]
+                                                              .getSerieBus()));
+                                                  Navigator.push(
+                                                      context, route);
+                                                },
                                                 child: Text(
                                                   "Tiquete n° " +
                                                       snapshot
@@ -334,6 +348,12 @@ class _MainBARState extends State<MainBAR> {
                                                       "\nDescripcion: " +
                                                       snapshot.data![index]
                                                           .descripcipon +
+                                                      "\nRuta - " +
+                                                      snapshot.data![index]
+                                                          .getLugarS() +
+                                                      " - " +
+                                                      snapshot.data![index]
+                                                          .getLugarLL() +
                                                       "\nCosto: " +
                                                       snapshot
                                                           .data![index].costo
@@ -517,7 +537,10 @@ class _MainBARState extends State<MainBAR> {
                                                             });
                                                       },
                                                       child: Text(
-                                                        "Hora " +
+                                                        "Bus: " +
+                                                            dataH![index]
+                                                                .gatBusSerie() +
+                                                            "\nHora: " +
                                                             dataH![index]
                                                                 .getHora() +
                                                             "\nParada: " +
@@ -600,7 +623,10 @@ class _MainBARState extends State<MainBAR> {
                     ),
                   ]));
             } else {
-              return CircularProgressIndicator();
+              return Center(
+                  child: CircularProgressIndicator(
+                color: Colors.black,
+              ));
             }
           },
         ));
@@ -1237,5 +1263,171 @@ class _AccBARState extends State<AccBAR> {
         ),
       ),
     );
+  }
+}
+
+class MapBar extends StatefulWidget {
+  const MapBar({super.key, required this.busSerie});
+  final String busSerie;
+
+  @override
+  State<MapBar> createState() => _MapBarState();
+}
+
+class _MapBarState extends State<MapBar> {
+  final apiHandler api = apiHandler();
+  final Routemap route = Routemap();
+  late LatLng? destino;
+  late LatLng? bus;
+  LatLng? myPos;
+  late Future<bool?> state;
+  late MapController _mapController;
+  late List<LatLng>? puntos;
+  Osrm osrm = Osrm();
+  bool start = false;
+  String? text;
+  IconData? ico;
+
+  @override
+  void initState() {
+    super.initState();
+    _mapController = MapController();
+  }
+
+  Future<bool> getLocs(String busS) async {
+    Location? aux;
+    aux = await api.getLocationParada(busS);
+    destino = new LatLng(aux!.latitud, aux.longitud);
+
+    aux = await api.getLocation(busS);
+    bus = new LatLng(aux!.latitud, aux.longitud);
+
+    return true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+            backgroundColor: Colors.black,
+            foregroundColor: Colors.white,
+            title: SizedBox(
+              width: double.maxFinite,
+              height: 75,
+            )),
+        body: StreamBuilder<Position>(
+            stream: Geolocator.getPositionStream(),
+            builder: ((context, snapshot) {
+              if (snapshot.hasData) {
+                myPos =
+                    LatLng(snapshot.data!.latitude, snapshot.data!.longitude);
+                return FutureBuilder(
+                    future: getLocs(widget.busSerie),
+                    builder: ((context, sanp) {
+                      if (sanp.hasData) {
+                        return FutureBuilder(
+                            future: route.getRuta(bus!.latitude, bus!.longitude,
+                                destino!.latitude, destino!.longitude),
+                            builder: (((context, snapshot2) {
+                              if (snapshot2.hasData) {
+                                puntos = snapshot2.data;
+                                return Center(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.80,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.85,
+                                          child: Material(
+                                              color: const Color.fromARGB(
+                                                  255, 243, 237, 246),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              child: FlutterMap(
+                                                  mapController: _mapController,
+                                                  options: MapOptions(
+                                                      initialCenter: myPos!,
+                                                      initialZoom: 16,
+                                                      maxZoom: 20,
+                                                      minZoom: 15),
+                                                  children: [
+                                                    TileLayer(
+                                                      urlTemplate:
+                                                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                                      userAgentPackageName:
+                                                          'com.example.app',
+                                                    ),
+                                                    PolylineLayer(polylines: [
+                                                      Polyline(
+                                                          points: puntos!,
+                                                          color: Colors.black,
+                                                          strokeWidth: 6)
+                                                    ]),
+                                                    MarkerLayer(markers: [
+                                                      Marker(
+                                                        point:
+                                                            myPos!, // Use the new position
+                                                        width: 80,
+                                                        height: 80,
+                                                        child: Icon(
+                                                            Icons.person_pin,
+                                                            color: Colors.red),
+                                                      ),
+                                                      Marker(
+                                                        point:
+                                                            bus!, // Use the new position
+                                                        width: 80,
+                                                        height: 80,
+                                                        child: Icon(
+                                                            Icons
+                                                                .directions_bus,
+                                                            color: Colors.red),
+                                                      ),
+                                                      Marker(
+                                                        point:
+                                                            destino!, // Use the new position
+                                                        width: 80,
+                                                        height: 80,
+                                                        child: Icon(
+                                                            Icons.location_on,
+                                                            color: Colors.red),
+                                                      ),
+                                                      // Add other markers if needed
+                                                    ]),
+                                                  ]))),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return Center(
+                                    child: CircularProgressIndicator(
+                                  color: Colors.black,
+                                ));
+                              }
+                            })));
+                      } else {
+                        return Center(
+                          child: Text("El bus no se encuentra activo ahora"),
+                        );
+                      }
+                    }));
+              } else {
+                return Center(
+                    child: CircularProgressIndicator(
+                  color: Colors.black,
+                ));
+              }
+            })));
   }
 }

@@ -1,0 +1,275 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|d:\\descargas\\app_buses-main\\app_buses-main\\api_flutter\\apiflutter\\apiflutter\\modeloquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|solutionrelative:apiflutter\\modeloquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|d:\\descargas\\app_buses-main\\app_buses-main\\api_flutter\\apiflutter\\apiflutter\\modelodatos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|solutionrelative:apiflutter\\modelodatos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|d:\\descargas\\app_buses-main\\app_buses-main\\api_flutter\\apiflutter\\apiflutter\\models\\tiquete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|solutionrelative:apiflutter\\models\\tiquete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|d:\\descargas\\app_buses-main\\app_buses-main\\api_flutter\\apiflutter\\apiflutter\\models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|solutionrelative:apiflutter\\models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|d:\\descargas\\app_buses-main\\app_buses-main\\api_flutter\\apiflutter\\apiflutter\\models\\location.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|solutionrelative:apiflutter\\models\\location.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|d:\\descargas\\app_buses-main\\app_buses-main\\api_flutter\\apiflutter\\apiflutter\\models\\apidb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|solutionrelative:apiflutter\\models\\apidb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|d:\\descargas\\app_buses-main\\app_buses-main\\api_flutter\\apiflutter\\apiflutter\\models\\asiento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|solutionrelative:apiflutter\\models\\asiento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|d:\\descargas\\app_buses-main\\app_buses-main\\api_flutter\\apiflutter\\apiflutter\\models\\chofer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|solutionrelative:apiflutter\\models\\chofer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|d:\\descargas\\app_buses-main\\app_buses-main\\api_flutter\\apiflutter\\apiflutter\\models\\vehiculo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|solutionrelative:apiflutter\\models\\vehiculo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|d:\\descargas\\app_buses-main\\app_buses-main\\api_flutter\\apiflutter\\apiflutter\\models\\horario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|solutionrelative:apiflutter\\models\\horario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|d:\\descargas\\app_buses-main\\app_buses-main\\api_flutter\\apiflutter\\apiflutter\\controllers\\querycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|solutionrelative:apiflutter\\controllers\\querycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|d:\\descargas\\app_buses-main\\app_buses-main\\api_flutter\\apiflutter\\apiflutter\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|solutionrelative:apiflutter\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|d:\\descargas\\app_buses-main\\app_buses-main\\api_flutter\\apiflutter\\apiflutter\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|solutionrelative:apiflutter\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|d:\\descargas\\app_buses-main\\app_buses-main\\api_flutter\\apiflutter\\apiflutter\\apiflutter.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|solutionrelative:apiflutter\\apiflutter.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|d:\\descargas\\app_buses-main\\app_buses-main\\api_flutter\\apiflutter\\apiflutter\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C7C7A48-D91D-4A37-BD26-27F1E812AFFF}|ApiFlutter\\ApiFlutter.csproj|solutionrelative:apiflutter\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Location.cs",
+              "DocumentMoniker": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\Location.cs",
+              "RelativeDocumentMoniker": "ApiFlutter\\Models\\Location.cs",
+              "ToolTip": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\Location.cs",
+              "RelativeToolTip": "ApiFlutter\\Models\\Location.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAqwAsAAAAsAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T01:44:17.348Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ModeloDatos.cs",
+              "DocumentMoniker": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\ModeloDatos.cs",
+              "RelativeDocumentMoniker": "ApiFlutter\\ModeloDatos.cs",
+              "ToolTip": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\ModeloDatos.cs",
+              "RelativeToolTip": "ApiFlutter\\ModeloDatos.cs",
+              "ViewState": "AQIAAA4AAAAAAAAAAIA4wCAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T00:50:30.24Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "modeloQuery.cs",
+              "DocumentMoniker": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\modeloQuery.cs",
+              "RelativeDocumentMoniker": "ApiFlutter\\modeloQuery.cs",
+              "ToolTip": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\modeloQuery.cs",
+              "RelativeToolTip": "ApiFlutter\\modeloQuery.cs",
+              "ViewState": "AQIAAG0AAAAAAAAAAAArwIMAAAA9AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T00:50:29.077Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "QueryController.cs",
+              "DocumentMoniker": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Controllers\\QueryController.cs",
+              "RelativeDocumentMoniker": "ApiFlutter\\Controllers\\QueryController.cs",
+              "ToolTip": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Controllers\\QueryController.cs",
+              "RelativeToolTip": "ApiFlutter\\Controllers\\QueryController.cs",
+              "ViewState": "AQIAABABAAAAAAAAAAAmwCkBAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T00:50:24.01Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Usuario.cs",
+              "DocumentMoniker": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\Usuario.cs",
+              "RelativeDocumentMoniker": "ApiFlutter\\Models\\Usuario.cs",
+              "ToolTip": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\Usuario.cs",
+              "RelativeToolTip": "ApiFlutter\\Models\\Usuario.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T00:47:56.359Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Chofer.cs",
+              "DocumentMoniker": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\Chofer.cs",
+              "RelativeDocumentMoniker": "ApiFlutter\\Models\\Chofer.cs",
+              "ToolTip": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\Chofer.cs",
+              "RelativeToolTip": "ApiFlutter\\Models\\Chofer.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T00:47:51.107Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ApiDB.cs",
+              "DocumentMoniker": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\ApiDB.cs",
+              "RelativeDocumentMoniker": "ApiFlutter\\Models\\ApiDB.cs",
+              "ToolTip": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\ApiDB.cs",
+              "RelativeToolTip": "ApiFlutter\\Models\\ApiDB.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAxAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T00:47:48.755Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Asiento.cs",
+              "DocumentMoniker": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\Asiento.cs",
+              "RelativeDocumentMoniker": "ApiFlutter\\Models\\Asiento.cs",
+              "ToolTip": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\Asiento.cs",
+              "RelativeToolTip": "ApiFlutter\\Models\\Asiento.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T00:47:47.793Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Horario.cs",
+              "DocumentMoniker": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\Horario.cs",
+              "RelativeDocumentMoniker": "ApiFlutter\\Models\\Horario.cs",
+              "ToolTip": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\Horario.cs",
+              "RelativeToolTip": "ApiFlutter\\Models\\Horario.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T00:47:44.835Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Tiquete.cs",
+              "DocumentMoniker": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\Tiquete.cs",
+              "RelativeDocumentMoniker": "ApiFlutter\\Models\\Tiquete.cs",
+              "ToolTip": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\Tiquete.cs",
+              "RelativeToolTip": "ApiFlutter\\Models\\Tiquete.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T00:47:13.666Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Vehiculo.cs",
+              "DocumentMoniker": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\Vehiculo.cs",
+              "RelativeDocumentMoniker": "ApiFlutter\\Models\\Vehiculo.cs",
+              "ToolTip": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Models\\Vehiculo.cs",
+              "RelativeToolTip": "ApiFlutter\\Models\\Vehiculo.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-23T00:46:39.264Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "ApiFlutter\\Properties\\launchSettings.json",
+              "ToolTip": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Properties\\launchSettings.json",
+              "RelativeToolTip": "ApiFlutter\\Properties\\launchSettings.json",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAswBoAAAAvAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-04-21T05:05:31.793Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ApiFlutter.http",
+              "DocumentMoniker": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\ApiFlutter.http",
+              "RelativeDocumentMoniker": "ApiFlutter\\ApiFlutter.http",
+              "ToolTip": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\ApiFlutter.http",
+              "RelativeToolTip": "ApiFlutter\\ApiFlutter.http",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2024-04-21T05:05:01.216Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\appsettings.json",
+              "RelativeDocumentMoniker": "ApiFlutter\\appsettings.json",
+              "ToolTip": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\appsettings.json",
+              "RelativeToolTip": "ApiFlutter\\appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-04-21T05:04:57.848Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Program.cs",
+              "RelativeDocumentMoniker": "ApiFlutter\\Program.cs",
+              "ToolTip": "D:\\Descargas\\APP_BUSES-main\\APP_BUSES-main\\API_FLUTTER\\ApiFlutter\\ApiFlutter\\Program.cs",
+              "RelativeToolTip": "ApiFlutter\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-21T05:04:27.782Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

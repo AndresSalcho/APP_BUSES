@@ -38,4 +38,22 @@ class Routemap {
       return null;
     }
   }
+
+  Future<List<LatLng>?> getRuta(double currentLat, double currentLon,
+      double destinoLat, double destinoLon) async {
+    try {
+      RouteRequest opcion = RouteRequest(
+          coordinates: [(currentLon, currentLat), (destinoLon, destinoLat)],
+          overview: OsrmOverview.full);
+
+      RouteResponse ruta = await osrm.route(opcion);
+
+      return ruta.routes.first.geometry!.lineString!.coordinates.map((e) {
+        var location = e.toLocation();
+        return LatLng(location.lat, location.lng);
+      }).toList();
+    } catch (e) {
+      return null;
+    }
+  }
 }

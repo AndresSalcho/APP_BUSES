@@ -15,6 +15,8 @@ namespace ApiFlutter.Models
         public DbSet<Asiento> asiento { get; set; }
         public DbSet<Tiquete> tiquete { get; set; }
         public DbSet<Vehiculo> vehiculo { get; set; }
+        public DbSet<Location> location { get; set; }
+
 
 
 

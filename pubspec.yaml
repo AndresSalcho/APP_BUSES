@@ -42,6 +42,8 @@ dependencies:
   google_polyline_algorithm: ^3.1.0
   osrm: ^0.0.5
   location: ^6.0.1
+  flutter_map_math: ^0.1.7
+  pumli: ^0.1.5
 
 dev_dependencies:
   flutter_test:

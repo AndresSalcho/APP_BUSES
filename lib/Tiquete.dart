@@ -5,15 +5,18 @@ class Tiquete {
   String fecha;
   String numeroSerieBus;
   int costo;
+  String LugarLlegada;
+  String LugarSalida;
 
-  Tiquete({
-    required this.idPago,
-    required this.cedulaCliente,
-    required this.descripcipon,
-    required this.fecha,
-    required this.numeroSerieBus,
-    required this.costo,
-  });
+  Tiquete(
+      {required this.idPago,
+      required this.cedulaCliente,
+      required this.descripcipon,
+      required this.fecha,
+      required this.numeroSerieBus,
+      required this.costo,
+      required this.LugarLlegada,
+      required this.LugarSalida});
 
   int getIdPago() {
     return idPago;
@@ -39,11 +42,21 @@ class Tiquete {
     return costo;
   }
 
+  String getLugarLL() {
+    return LugarLlegada;
+  }
+
+  String getLugarS() {
+    return LugarSalida;
+  }
+
   factory Tiquete.fromJson(Map<String, dynamic> json) => Tiquete(
       idPago: json['idPago'],
       cedulaCliente: json['cedulaCliente'],
       descripcipon: json['descripcipon'],
       fecha: json['fecha'],
       numeroSerieBus: json['numeroSerieBus'],
-      costo: json['costo']);
+      costo: json['costo'],
+      LugarLlegada: json['lugarLlegada'],
+      LugarSalida: json['lugarSalida']);
 }

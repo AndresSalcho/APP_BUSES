@@ -6,6 +6,7 @@ import 'package:projecto_app1/Chofer.dart';
 import 'package:projecto_app1/Horario.dart';
 import 'package:projecto_app1/Tiquete.dart';
 import 'package:projecto_app1/Usuario.dart';
+import 'package:projecto_app1/Location.dart';
 import 'package:http/http.dart' as http;
 import 'package:projecto_app1/Vehiculo.dart';
 
@@ -213,6 +214,58 @@ class apiHandler {
       }
     } catch (e) {
       print('Hubo un error al enviar los datos: $e');
+    }
+  }
+
+  Future<void> setLocation(String busSerie, double lat, double lon) async {
+    var url = Uri.parse(
+        "https://busesapi.ddns.net:7064/api/Query/addLocation?BusSerie=$busSerie&lat=$lat&lon=$lon");
+    try {
+      http.Response response = await http.post(url);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var responseData = json.decode(response.body);
+        print('Exito: $responseData');
+      } else {
+        print('Fallo en el Query ${response.statusCode}.');
+      }
+    } catch (e) {
+      print('Hubo un error al enviar los datos: $e');
+    }
+  }
+
+  Future<Location?> getLocation(String busSerie) async {
+    var url = Uri.parse(
+        "https://busesapi.ddns.net:7064/api/Query/getLocation?BusSerie=$busSerie");
+    try {
+      http.Response response = await http.get(url);
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        return Location.fromJson(data);
+      } else {
+        print('Failed to query user: ${response.statusCode}.');
+        return null;
+      }
+    } catch (e) {
+      print('There was an error getting the data: $e');
+      return null;
+    }
+  }
+
+  Future<Location?> getLocationParada(String busSerie) async {
+    var url = Uri.parse(
+        "https://busesapi.ddns.net:7064/api/Query/getLocationParada?BusSerie=$busSerie");
+    try {
+      http.Response response = await http.get(url);
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        return Location.fromJson(data);
+      } else {
+        print('Failed to query user: ${response.statusCode}.');
+        return null;
+      }
+    } catch (e) {
+      print('There was an error getting the data: $e');
+      return null;
     }
   }
 }

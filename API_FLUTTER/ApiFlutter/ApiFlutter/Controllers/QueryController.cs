@@ -1,5 +1,4 @@
 ﻿using ApiFlutter.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -240,6 +239,66 @@ namespace ApiFlutter.Controllers
                     return Ok("Compra Exitosa");
                 }
                 return BadRequest("Operacion fallida");
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        [HttpPost]
+        public async Task<IActionResult> addLocation(string BusSerie, double lat, double lon)
+        {
+            try
+            {
+                bool isGood = await _modeloQuery.addLocation(BusSerie,lat,lon);
+                if (isGood)
+                {
+                    return Ok("Coordenadas Agregadas con Exito");
+                }
+                return BadRequest("Operacion fallida");
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [ProducesResponseType(typeof(Location), (int)HttpStatusCode.OK)]
+        [HttpGet]
+        public async Task<IActionResult> getLocation(string BusSerie)
+        {
+            try
+            {
+                var location = await _modeloQuery.getLocation(BusSerie);
+                if (location == null)
+                {
+                    return NotFound();
+                }
+                return Ok(location);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [ProducesResponseType(typeof(Location), (int)HttpStatusCode.OK)]
+        [HttpGet]
+        public async Task<IActionResult> getLocationParada(string BusSerie)
+        {
+            try
+            {
+                var location = await _modeloQuery.getLocationParada(BusSerie);
+                if (location == null)
+                {
+                    return NotFound();
+                }
+                return Ok(location);
 
             }
             catch (Exception ex)
