@@ -3,6 +3,7 @@ import 'package:projecto_app1/pantallas/login.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:window_manager/window_manager.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -22,6 +23,12 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]).then((value) => runApp(const App()));
   HttpOverrides.global = MyHttpOverrides();
+
+  var stat = await Permission.locationWhenInUse.status;
+
+  if (stat.isDenied) {
+    await Permission.locationWhenInUse.request();
+  }
 
   await windowManager.ensureInitialized();
 
